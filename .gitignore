@@ -1,0 +1,61 @@
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+.fleet/
+.nova/
+.phpactor.json
+.zed/
+
+# Environment
+.env
+.env.backup
+.env.production
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Composer/PHP
+vendor/
+composer.lock
+auth.json
+
+# Laravel specific
+storage/*.key
+storage/logs/
+storage/pail/
+bootstrap/cache/
+.phpunit.result.cache
+.phpunit.cache/
+
+# Build artifacts
+public/build/
+public/hot/
+public/storage/
+dist/
+dist-ssr/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.bak
+Homestead.json
+Homestead.yaml
+
+# Lock files (optional - uncomment if you want to commit them)
+# package-lock.json
+# yarn.lock
+# composer.lock
