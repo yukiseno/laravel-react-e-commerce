@@ -9,28 +9,38 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'address',
+        'city',
+        'zip_code',
+        'country',
+        'phone_number',
+        'profile_image',
+        'profile_completed'
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $appends = [
+        'image_path',
     ];
 
     /**
@@ -44,5 +54,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class)->with('products')->latest();
+    }
+
+    public function getImagePathAttribute()
+    {
+        if ($this->profile_image) {
+            return asset($this->profile_image);
+        } else {
+            asset('images/user.png');
+        }
     }
 }
