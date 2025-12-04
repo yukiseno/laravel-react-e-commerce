@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddSizeRequest;
+use App\Http\Requests\UpdateSizeRequest;
 use App\Models\Size;
-use Illuminate\Http\Request;
 
 class SizeController extends Controller
 {
@@ -13,7 +14,9 @@ class SizeController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.sizes.index')->with([
+            'sizes' => Size::latest()->get()
+        ]);
     }
 
     /**
@@ -21,23 +24,28 @@ class SizeController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.sizes.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddSizeRequest $request)
     {
-        //
+        if ($request->validated()) {
+            Size::create($request->validated());
+            return redirect()->route('admin.sizes.index')->with([
+                'success' => 'Size has been added successfully'
+            ]);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Size $size)
+    public function show(Size $color)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -45,15 +53,22 @@ class SizeController extends Controller
      */
     public function edit(Size $size)
     {
-        //
+        return view('admin.sizes.edit')->with([
+            'size' => $size
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Size $size)
+    public function update(UpdateSizeRequest $request, Size $size)
     {
-        //
+        if ($request->validated()) {
+            $size->update($request->validated());
+            return redirect()->route('admin.sizes.index')->with([
+                'success' => 'Size has been updated successfully'
+            ]);
+        }
     }
 
     /**
@@ -61,6 +76,9 @@ class SizeController extends Controller
      */
     public function destroy(Size $size)
     {
-        //
+        $size->delete();
+        return redirect()->route('admin.sizes.index')->with([
+            'success' => 'Size has been deleted successfully'
+        ]);
     }
 }
