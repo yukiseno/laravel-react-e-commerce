@@ -19,7 +19,7 @@
                         @csrf
                         <button type="submit" class="nav-link d-flex align-items-center gap-2">
                             <i class="bi bi-box-arrow-right"></i>
-                            Sign out
+                            Log out
                         </button>
                     </form>
 
