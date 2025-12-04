@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import ProductsList from "./products/ProductsList";
+import { axiosRequest } from "../helpers/config";
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [colors, setColors] = useState([]);
@@ -11,7 +11,7 @@ export default function Home() {
     const fetchAllProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/products");
+        const response = await axiosRequest.get("products");
         setProducts(response.data.data);
         setColors(response.data.colors);
         setSizes(response.data.sizes);
@@ -26,7 +26,6 @@ export default function Home() {
   console.log("Products:", products);
   console.log("Colors:", colors);
   console.log("Sizes:", sizes);
-  console.log("loading:", loading);
 
   if (loading) {
     return <div>Loading...</div>;
