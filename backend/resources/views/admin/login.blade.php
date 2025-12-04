@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <div class="row my-5">
-            <div class="col-6 mx-auto ">
+            <div class="col-md-6 mx-auto ">
                 @session('error')
                     <div class="alert alert-danger my-2">
                         {{ session('error') }}
