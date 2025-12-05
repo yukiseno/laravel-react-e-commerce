@@ -53,9 +53,7 @@ export default function Product() {
                 {product?.name}
               </h5>
 
-              <span className="px-3 py-1 text-sm bg-red-600 text-white rounded-lg">
-                ${product?.price}
-              </span>
+              <span className="px-3 py-1 text-sm">${product?.price}</span>
             </div>
 
             {/* DESCRIPTION */}
