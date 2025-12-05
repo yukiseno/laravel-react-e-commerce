@@ -2,34 +2,38 @@ import React from "react";
 import { Link } from "react-router-dom";
 export default function ProductListItem({ product }) {
   return (
-    <Link to={`/product/${product.slug}`}>
-      <img src={product.thumbnail} alt={product.name} />
-      <div>{product.name}</div>
-      <div>{product.price}</div>
-      <div className="">
+    <Link
+      to={`/product/${product.slug}`}
+      className="block border rounded-xl p-4 shadow hover:shadow-lg transition"
+    >
+      <img
+        src={product.thumbnail}
+        alt={product.name}
+        className="w-full h-48 object-cover rounded-lg"
+      />
+      <div className="mt-3 font-semibold">{product.name}</div>
+      <div className="text-gray-600">${product.price}</div>
+      <div className="flex gap-2 mt-2">
         {product.sizes?.map((size) => (
-          <span key={size.id} className="">
-            <small>{size.name}</small>
+          <span key={size.id} className="text-xs border px-2 py-1 rounded">
+            {size.name}
           </span>
         ))}
       </div>
-      <div>
+      <div className="mt-2">
         {product.status == 1 ? (
-          <span className="badge bg-success p-2">In Stock</span>
+          <span className="text-green-600 text-sm font-medium">In Stock</span>
         ) : (
-          <span className="badge bg-danger p-2">Out of Stock</span>
+          <span className="text-red-600 text-sm font-medium">Out of Stock</span>
         )}
       </div>
-      <div className="">
+
+      <div className="flex gap-2 mt-2">
         {product.colors?.map((color) => (
           <div
             key={color.id}
-            className=""
-            style={{
-              backgroundColor: color.name.toLowerCase(),
-              height: "20px",
-              width: "20px",
-            }}
+            className="h-5 w-5 rounded-full border"
+            style={{ backgroundColor: color.name.toLowerCase() }}
           ></div>
         ))}
       </div>
