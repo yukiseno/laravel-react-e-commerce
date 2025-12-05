@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ProductsList from "./products/ProductsList";
 import { axiosRequest } from "../helpers/config";
+import Spinner from "./layouts/Spinner";
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [colors, setColors] = useState([]);
@@ -28,7 +29,7 @@ export default function Home() {
   console.log("Sizes:", sizes);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
   return <ProductsList products={products} />;
 }
