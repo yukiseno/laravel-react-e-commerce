@@ -142,7 +142,7 @@ export default function Home() {
                 <span className="font-bold">Search:</span>
               </div>
 
-              <form className="flex">
+              <div className="flex">
                 <input
                   type="search"
                   className="border rounded-lg p-2 w-full disabled:bg-gray-100"
@@ -151,7 +151,7 @@ export default function Home() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search..."
                 />
-              </form>
+              </div>
             </div>
           </div>
         </div>
