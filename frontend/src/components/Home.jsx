@@ -157,7 +157,7 @@ export default function Home() {
         </div>
       </div>
       {message ? (
-        <Alert type="primary" content={message} />
+        <Alert type="info" content={message} />
       ) : loading ? (
         <Spinner />
       ) : (
