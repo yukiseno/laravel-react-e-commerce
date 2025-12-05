@@ -4,6 +4,7 @@ import { axiosRequest } from "../../helpers/config";
 import Spinner from "../layouts/Spinner";
 import Alert from "../layouts/Alert";
 import parse from "html-react-parser";
+import Slider from "./Images/Slider";
 
 export default function Product() {
   const [product, setProduct] = useState([]);
@@ -40,7 +41,9 @@ export default function Product() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* LEFT COLUMN - SLIDER */}
-          <div className="p-2">SLider</div>
+          <div className="p-2">
+            <Slider product={product} />
+          </div>
 
           {/* RIGHT COLUMN */}
           <div className="md:col-span-2 space-y-4">
