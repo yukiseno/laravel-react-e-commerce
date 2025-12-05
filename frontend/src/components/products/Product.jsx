@@ -32,7 +32,7 @@ export default function Product() {
   }, [slug]);
 
   return (
-    <div>
+    <div className="my-3">
       {error ? (
         <Alert content={error} type="danger" />
       ) : loading ? (
