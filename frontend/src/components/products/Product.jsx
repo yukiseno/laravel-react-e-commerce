@@ -4,7 +4,9 @@ import { axiosRequest } from "../../helpers/config";
 import Spinner from "../layouts/Spinner";
 import Alert from "../layouts/Alert";
 import parse from "html-react-parser";
-import Slider from "./Images/Slider";
+import Slider from "./images/Slider";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/cart/cartSlice";
 
 export default function Product() {
   const [product, setProduct] = useState([]);
@@ -14,6 +16,7 @@ export default function Product() {
   const [qty, setQty] = useState(1);
   const [error, setError] = useState("");
   const { slug } = useParams();
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchProductBySlug = async () => {
       setLoading(true);
@@ -32,6 +35,18 @@ export default function Product() {
     fetchProductBySlug();
   }, [slug]);
 
+  const makeUniqueId = (length) => {
+    let result = "";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+  };
   return (
     <div className="my-3">
       {error ? (
