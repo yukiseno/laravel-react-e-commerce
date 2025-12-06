@@ -5,10 +5,10 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
 const navigation = [
   { name: "Home", href: "/", current: true },
-  { name: "Cart", href: "/", current: false },
+  { name: "Cart", href: "/cart", current: false },
 ];
 
 function classNames(...classes) {
@@ -51,9 +51,9 @@ export default function Header() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     aria-current={item.current ? "page" : undefined}
                     className={classNames(
                       item.current
@@ -68,7 +68,7 @@ export default function Header() {
                         {cartItems.length}
                       </span>
                     )}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
