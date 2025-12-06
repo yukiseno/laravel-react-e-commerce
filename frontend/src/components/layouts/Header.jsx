@@ -4,14 +4,19 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
 
-const navigation = [{ name: "Home", href: "/", current: true }];
+const navigation = [
+  { name: "Home", href: "/", current: true },
+  { name: "Cart", href: "/", current: false },
+];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Header() {
+  const { cartItems } = useSelector((state) => state.cart);
   return (
     <Disclosure as="nav" className="relative bg-white border-b border-gray-200">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -54,10 +59,15 @@ export default function Header() {
                       item.current
                         ? "bg-gray-100 text-gray-900"
                         : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                      "rounded-md px-3 py-2 text-sm font-medium"
+                      "relative rounded-md px-3 py-2 text-sm font-medium"
                     )}
                   >
                     {item.name}
+                    {item.name === "Cart" && cartItems.length > 0 && (
+                      <span className="absolute -top-1 -right-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-xs font-bold bg-gray-800 text-white">
+                        {cartItems.length}
+                      </span>
+                    )}
                   </a>
                 ))}
               </div>
@@ -65,7 +75,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-
       {/* Mobile Menu */}
       <DisclosurePanel className="sm:hidden border-t border-gray-200 bg-white">
         <div className="space-y-1 px-2 pt-2 pb-3">
