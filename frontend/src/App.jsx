@@ -3,6 +3,7 @@ import Header from "./components/layouts/Header";
 import Home from "./components/Home";
 import Product from "./components/products/Product";
 import Cart from "./components/cart/Cart";
+import Checkout from "./components/checkout/Checkout";
 function App() {
   return (
     <BrowserRouter>
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/product/:slug" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout/" element={<Checkout />} />
       </Routes>
     </BrowserRouter>
   );

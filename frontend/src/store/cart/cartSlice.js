@@ -25,9 +25,13 @@ export const cartSlice = createSlice({
         toast.success("Product already added to your cart");
       }
     },
+    incrementQ(state, action) {},
+    decrementQ(state, action) {},
+    removeFromCart(state, action) {},
   },
 });
 
 const cartReducer = cartSlice.reducer;
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, incrementQ, decrementQ, removeFromCart } =
+  cartSlice.actions;
 export default cartReducer;
