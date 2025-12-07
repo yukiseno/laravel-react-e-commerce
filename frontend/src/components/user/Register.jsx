@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import ValidationErrors from "../common/ValidationErrors";
 import Spinner from "../layouts/Spinner";
+import { toast } from "react-toastify";
+import { axiosRequest } from "../../helpers/config";
+import { useNavigate } from "react-router-dom";
 export default function Register() {
   const [user, setUser] = useState({
     name: "",
@@ -9,12 +12,26 @@ export default function Register() {
   });
   const [validationErrors, setvalidationErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (field, value) => {
     setUser((prevUser) => ({ ...prevUser, [field]: value }));
   };
   const registerNewUser = async (e) => {
     e.preventDefault();
-    //work on later
+    setvalidationErrors([]);
+    setLoading(true);
+    try {
+      const response = await axiosRequest.post("user/register", user);
+      setLoading(false);
+      toast.success(response.data.message);
+      navigate("/login");
+    } catch (error) {
+      if (error?.response?.status === 422) {
+        setvalidationErrors(error.response.data.errors);
+      }
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   return (
