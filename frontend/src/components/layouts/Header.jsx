@@ -5,10 +5,12 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Cart", href: "/cart", current: false },
+  { name: "Home", href: "/" },
+  { name: "Cart", href: "/cart" },
+  { name: "Login", href: "/login" },
+  { name: "Register", href: "/register" },
 ];
 
 function classNames(...classes) {
@@ -51,16 +53,18 @@ export default function Header() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <Link
+                  <NavLink
                     key={item.name}
                     to={item.href}
                     aria-current={item.current ? "page" : undefined}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                      "relative rounded-md px-3 py-2 text-sm font-medium"
-                    )}
+                    className={({ isActive }) =>
+                      classNames(
+                        isActive
+                          ? "bg-gray-100 text-gray-900"
+                          : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                        "relative rounded-md px-3 py-2 text-sm font-medium"
+                      )
+                    }
                   >
                     {item.name}
                     {item.name === "Cart" && cartItems.length > 0 && (
@@ -68,7 +72,7 @@ export default function Header() {
                         {cartItems.length}
                       </span>
                     )}
-                  </Link>
+                  </NavLink>
                 ))}
               </div>
             </div>
@@ -79,20 +83,21 @@ export default function Header() {
       <DisclosurePanel className="sm:hidden border-t border-gray-200 bg-white">
         <div className="space-y-1 px-2 pt-2 pb-3">
           {navigation.map((item) => (
-            <DisclosureButton
+            <NavLink
               key={item.name}
-              as="a"
-              href={item.href}
-              aria-current={item.current ? "page" : undefined}
-              className={classNames(
-                item.current
-                  ? "bg-gray-100 text-gray-900"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                "block rounded-md px-3 py-2 text-base font-medium"
-              )}
+              to={item.href}
+              end={item.href === "/"}
+              className={({ isActive }) =>
+                classNames(
+                  isActive
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                  "block rounded-md px-3 py-2 text-base font-medium"
+                )
+              }
             >
               {item.name}
-            </DisclosureButton>
+            </NavLink>
           ))}
         </div>
       </DisclosurePanel>
