@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import ValidationErrors from "../common/ValidationErrors";
 import Spinner from "../layouts/Spinner";
+import { toast } from "react-toastify";
+import { axiosRequest } from "../../helpers/config";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuthState } from "../../store/user/userSlice";
 export default function Login() {
   const [user, setUser] = useState({
     email: "",
@@ -8,9 +13,35 @@ export default function Login() {
   });
   const [validationErrors, setvalidationErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const loginUser = async (e) => {
     e.preventDefault();
-    //work on later
+    setLoading(true);
+    setvalidationErrors([]);
+    try {
+      const response = await axiosRequest.post("user/login", user);
+      setLoading(false);
+      console.log(response);
+      if (response.data.error) {
+        toast.error(response.data.error);
+      } else {
+        console.log(response.data);
+        dispatch(
+          setAuthState({
+            user: response.data.user,
+            token: response.data.access_token,
+          })
+        );
+        navigate("/");
+      }
+    } catch (error) {
+      if (error?.response?.status === 422) {
+        setvalidationErrors(error.response.data.errors);
+      }
+      console.log(error);
+      setLoading(false);
+    }
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
