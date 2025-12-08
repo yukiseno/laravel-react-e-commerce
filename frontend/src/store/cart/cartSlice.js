@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 const initialState = {
   cartItems: [],
   validCoupon: null,
+  clientSecret: null,
 };
 
 export const cartSlice = createSlice({
@@ -76,6 +77,12 @@ export const cartSlice = createSlice({
     clearCartItems(state) {
       state.cartItems = [];
     },
+    setClientSecret: (state, action) => {
+      state.clientSecret = action.payload;
+    },
+    clearClientSecret: (state) => {
+      state.clientSecret = null;
+    },
   },
 });
 
@@ -89,5 +96,7 @@ export const {
   addCouponIdToCartItem,
   clearCoupon,
   clearCartItems,
+  setClientSecret,
+  clearClientSecret,
 } = cartSlice.actions;
 export default cartReducer;

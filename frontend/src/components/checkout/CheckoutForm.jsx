@@ -3,7 +3,11 @@ import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { axiosRequest, getConfig } from "../../helpers/config";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCartItems, clearCoupon } from "../../store/cart/cartSlice";
+import {
+  clearCartItems,
+  clearCoupon,
+  clearClientSecret,
+} from "../../store/cart/cartSlice";
 import { setAuthState } from "../../store/user/userSlice";
 import { toast } from "react-toastify";
 
@@ -30,6 +34,7 @@ export default function CheckoutForm() {
         getConfig(token)
       );
 
+      dispatch(clearClientSecret());
       dispatch(clearCartItems());
       dispatch(clearCoupon());
       dispatch(setAuthState({ user: response.data.user, token }));

@@ -44,16 +44,28 @@ class OrderController extends Controller
      */
     public function payOrderByStripe(Request $request)
     {
+        if (empty($request->cartItems)) {
+            return response()->json(['error' => 'Cart is empty'], 400);
+        }
         Stripe::setApiKey(config('services.stripe.secret'));
         try {
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $this->calculateOrderTotal($request->cartItems),
-                'currency' => 'usd',
-                'description' => 'React T-shirts Store'
-            ]);
+            $paymentIntent = PaymentIntent::create(
+                [
+                    'amount' => $this->calculateOrderTotal($request->cartItems),
+                    'currency' => 'usd',
+                    'description' => 'React T-shirts Store',
+                    'metadata' => [
+                        'user_id' => $request->user()->id,
+                    ],
+                ],
+                [
+                    'idempotency_key' => 'checkout-' . $request->user()->id,
+                ]
+            );
             //generate the client secret
             $output = [
-                'clientSecret' => $paymentIntent->client_secret
+                'clientSecret' => $paymentIntent->client_secret,
+                'paymentIntentId' => $paymentIntent->id,
             ];
             //send the client secret to the front end
             return response()->json($output);
@@ -63,6 +75,38 @@ class OrderController extends Controller
             ]);
         }
     }
+    public function updatePaymentIntent(Request $request)
+    {
+        if (empty($request->cartItems)) {
+            return response()->json(['error' => 'Cart is empty'], 400);
+        }
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $intent = PaymentIntent::retrieve($request->payment_intent_id);
+
+        if (($intent->metadata['user_id'] ?? null) != $request->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        if (!in_array($intent->status, ['requires_payment_method', 'requires_confirmation'])) {
+            return response()->json([
+                'error' => 'PaymentIntent cannot be updated'
+            ], 400);
+        }
+
+
+        $amount = $this->calculateOrderTotal($request->cartItems);
+
+        $intent = PaymentIntent::update(
+            $intent->id,
+            ['amount' => $amount]
+        );
+
+        return response()->json([
+            'clientSecret' => $intent->client_secret,
+        ]);
+    }
+
 
     public function calculateOrderTotal($items)
     {

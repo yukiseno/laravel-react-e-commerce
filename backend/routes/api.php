@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //order routes
     Route::post('store/order', [OrderController::class, 'store']);
     Route::post('pay/order', [OrderController::class, 'payOrderByStripe']);
+    Route::post('pay/update', [OrderController::class, 'updatePaymentIntent']);
 });
 //products routes
 Route::get('products', [ProductController::class, 'index']);
