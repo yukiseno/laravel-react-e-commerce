@@ -4,13 +4,14 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
+import { axiosRequest, getConfig } from "../../helpers/config";
+import { setAuthState, logout } from "../../store/user/userSlice";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Cart", href: "/cart" },
-  { name: "Login", href: "/login" },
-  { name: "Register", href: "/register" },
 ];
 
 function classNames(...classes) {
@@ -19,6 +20,40 @@ function classNames(...classes) {
 
 export default function Header() {
   const { cartItems } = useSelector((state) => state.cart);
+  const { isLoggedIn, token, user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getLoggedInUser = async () => {
+      try {
+        const response = await axiosRequest.get("user", getConfig(token));
+        dispatch(
+          setAuthState({
+            user: response.data.user,
+            token,
+          })
+        );
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          dispatch(logout());
+        }
+        console.log(error);
+      }
+    };
+    if (token) getLoggedInUser();
+  }, [token, dispatch]);
+
+  const logoutUser = async () => {
+    try {
+      const response = await axiosRequest.post(
+        "user/logout",
+        null,
+        getConfig(token)
+      );
+      dispatch(logout());
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Disclosure as="nav" className="relative bg-white border-b border-gray-200">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -74,6 +109,45 @@ export default function Header() {
                     )}
                   </NavLink>
                 ))}
+                {/* Auth links */}
+                {!isLoggedIn ? (
+                  <>
+                    <NavLink
+                      to="/login"
+                      className={({ isActive }) =>
+                        classNames(
+                          isActive
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                          "rounded-md px-3 py-2 text-sm font-medium"
+                        )
+                      }
+                    >
+                      Login
+                    </NavLink>
+
+                    <NavLink
+                      to="/register"
+                      className={({ isActive }) =>
+                        classNames(
+                          isActive
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                          "rounded-md px-3 py-2 text-sm font-medium"
+                        )
+                      }
+                    >
+                      Register
+                    </NavLink>
+                  </>
+                ) : (
+                  <button
+                    onClick={logoutUser}
+                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  >
+                    Logout
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -99,6 +173,45 @@ export default function Header() {
               {item.name}
             </NavLink>
           ))}
+          {/* Auth links */}
+          {!isLoggedIn ? (
+            <>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  classNames(
+                    isActive
+                      ? "bg-gray-100 text-gray-900"
+                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                    "block rounded-md px-3 py-2 text-base font-medium"
+                  )
+                }
+              >
+                Login
+              </NavLink>
+
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  classNames(
+                    isActive
+                      ? "bg-gray-100 text-gray-900"
+                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                    "block rounded-md px-3 py-2 text-base font-medium"
+                  )
+                }
+              >
+                Register
+              </NavLink>
+            </>
+          ) : (
+            <button
+              onClick={logoutUser}
+              className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </DisclosurePanel>
     </Disclosure>
