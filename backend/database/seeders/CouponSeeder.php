@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Coupon;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class CouponSeeder extends Seeder
 {
@@ -12,6 +13,20 @@ class CouponSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Coupon::firstOrCreate(
+            ['name' => 'WELCOME10'],
+            [
+                'discount' => 10,
+                'valid_until' => Carbon::now()->addMonth()->toDateString(),
+            ]
+        );
+
+        Coupon::firstOrCreate(
+            ['name' => 'SUMMER20'],
+            [
+                'discount' => 20,
+                'valid_until' => Carbon::now()->addMonths(2)->toDateString(),
+            ]
+        );
     }
 }
