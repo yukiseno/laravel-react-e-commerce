@@ -74,15 +74,30 @@ export default function CheckoutForm() {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <PaymentElement id="payment-element" />
-      <button disabled={isProcessing || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isProcessing ? "Processing ... " : "Pay now"}
-        </span>
+    <form
+      id="payment-form"
+      onSubmit={handleSubmit}
+      className="w-full max-w-md mx-auto space-y-6"
+    >
+      <div className="mb-6">
+        <PaymentElement />
+      </div>
+
+      <button
+        disabled={isProcessing || !stripe || !elements}
+        className={`w-full rounded-md px-4 py-3 text-white font-semibold transition
+      ${
+        isProcessing || !stripe || !elements
+          ? "bg-indigo-300 cursor-not-allowed"
+          : "bg-indigo-600 hover:bg-indigo-700"
+      }`}
+      >
+        {isProcessing ? "Processing..." : "Pay now"}
       </button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+
+      {message && (
+        <div className="text-center text-sm text-gray-600 mt-3">{message}</div>
+      )}
     </form>
   );
 }

@@ -42,10 +42,21 @@ export default function Stripe() {
     fetchClientSecret();
   }, [cartItems, validCoupon, token]);
 
+  const appearance = {
+    theme: "stripe",
+    variables: {
+      colorPrimary: "#4f46e5", // indigo-600
+      colorText: "#1f2937", // gray-800
+      colorDanger: "#dc2626", // red-600
+      fontFamily: "Inter, system-ui, sans-serif",
+      borderRadius: "6px",
+    },
+  };
+
   return (
     <>
       {stripePromise && clientSecret && (
-        <Elements stripe={stripePromise} options={{ clientSecret }}>
+        <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
           <CheckoutForm />
         </Elements>
       )}
