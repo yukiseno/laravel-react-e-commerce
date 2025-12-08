@@ -32,9 +32,9 @@ class Product extends Model
         return $this->belongsToMany(Size::class);
     }
 
-    public function orders()
+    public function orderItems()
     {
-        return $this->belongsToMany(Order::class);
+        return $this->hasMany(OrderItem::class);
     }
 
     public function reviews()
