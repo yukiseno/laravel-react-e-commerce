@@ -173,6 +173,10 @@ class ProductController extends Controller
      */
     public function removeProductImageFromStorage($file)
     {
+        // only delete uploaded images
+        if (!Str::startsWith($file, 'storage/')) {
+            return;
+        }
         $path = public_path($file);
         if (File::exists($path)) {
             File::delete($path);
