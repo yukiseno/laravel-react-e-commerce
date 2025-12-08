@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import Coupon from "../coupons/Coupon";
 export default function Checkout() {
   const { cartItems } = useSelector((state) => state.cart);
   const totalOfCartItems = cartItems.reduce(
@@ -15,6 +16,7 @@ export default function Checkout() {
 
           {/* Right column */}
           <div className="md:col-span-5 space-y-4">
+            <Coupon />
             <ul className="divide-y rounded-lg border border-gray-200">
               {cartItems.map((item) => (
                 <li key={item.ref} className="flex items-start gap-4 p-3">

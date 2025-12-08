@@ -61,10 +61,25 @@ export const cartSlice = createSlice({
       );
       toast.success("Product removed from your cart");
     },
+    setValidCoupon(state, action) {
+      state.validCoupon = action.payload;
+    },
+    addCouponIdToCartItem(state, action) {
+      const coupon_id = action.payload;
+      state.cartItems = state.cartItems.map((item) => {
+        return { ...item, coupon_id };
+      });
+    },
   },
 });
 
 const cartReducer = cartSlice.reducer;
-export const { addToCart, incrementQ, decrementQ, removeFromCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  incrementQ,
+  decrementQ,
+  removeFromCart,
+  setValidCoupon,
+  addCouponIdToCartItem,
+} = cartSlice.actions;
 export default cartReducer;
