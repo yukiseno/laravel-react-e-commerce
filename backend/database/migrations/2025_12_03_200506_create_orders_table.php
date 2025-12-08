@@ -13,12 +13,24 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('qty');
-            $table->decimal('total', 8, 2);
-            $table->datetime('delivered_at')->nullable();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('coupon_id')->nullable()->constrained()
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('coupon_id')
+                ->nullable()
+                ->constrained()
                 ->nullOnDelete();
+
+            $table->integer('total'); // cents
+            $table->string('status')->default('pending');
+            $table->datetime('delivered_at')->nullable();
+
+            $table->string('payment_intent_id')
+                ->nullable()
+                ->index();
+
             $table->timestamps();
         });
     }
