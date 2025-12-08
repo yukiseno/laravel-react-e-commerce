@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ValidationErrors from "../common/ValidationErrors";
 import Spinner from "../layouts/Spinner";
 import { toast } from "react-toastify";
 import { axiosRequest } from "../../helpers/config";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 export default function Register() {
   const [user, setUser] = useState({
     name: "",
@@ -13,6 +15,10 @@ export default function Register() {
   const [validationErrors, setvalidationErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (isLoggedIn) navigate("/");
+  }, [isLoggedIn, navigate]);
   const handleChange = (field, value) => {
     setUser((prevUser) => ({ ...prevUser, [field]: value }));
   };
