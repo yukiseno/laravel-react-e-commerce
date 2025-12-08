@@ -44,11 +44,7 @@ export default function Header() {
 
   const logoutUser = async () => {
     try {
-      const response = await axiosRequest.post(
-        "user/logout",
-        null,
-        getConfig(token)
-      );
+      await axiosRequest.post("user/logout", null, getConfig(token));
       dispatch(logout());
     } catch (error) {
       console.log(error);
