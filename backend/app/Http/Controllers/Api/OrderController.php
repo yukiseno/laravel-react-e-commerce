@@ -44,7 +44,7 @@ class OrderController extends Controller
      */
     public function payOrderByStripe(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(config('services.stripe.secret'));
         try {
             $paymentIntent = PaymentIntent::create([
                 'amount' => $this->calculateOrderTotal($request->cartItems),
