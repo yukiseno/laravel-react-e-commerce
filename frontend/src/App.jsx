@@ -7,6 +7,7 @@ import Checkout from "./components/checkout/Checkout";
 import Register from "./components/user/Register";
 import Login from "./components/user/Login";
 import Profile from "./components/user/Profile";
+import PayByStripe from "./components/checkout/PayByStripe";
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/register/" element={<Register />} />
         <Route path="/login/" element={<Login />} />
+        <Route path="/pay/order" element={<PayByStripe />} />
       </Routes>
     </BrowserRouter>
   );
