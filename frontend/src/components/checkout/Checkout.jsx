@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Coupon from "../coupons/Coupon";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  addCouponIdToCartItem,
+  setValidCoupon,
+} from "../../store/cart/cartSlice";
+import { toast } from "react-toastify";
+import Alert from "../layouts/Alert";
+
 export default function Checkout() {
-  const { cartItems } = useSelector((state) => state.cart);
+  const { user, isLoggedIn } = useSelector((state) => state.user);
+  const { cartItems, validCoupon } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoggedIn) navigate("/login");
+  }, [isLoggedIn, navigate]);
   const totalOfCartItems = cartItems.reduce(
     (acc, item) => (acc += item.price * item.qty),
     0
   );
+  const discountAmount = validCoupon?.discount
+    ? (totalOfCartItems * validCoupon.discount) / 100
+    : 0;
+  const totalAfterDiscount = totalOfCartItems - discountAmount;
+  const removeCoupon = () => {
+    dispatch(
+      setValidCoupon({
+        name: "",
+        discount: 0,
+      })
+    );
+    dispatch(addCouponIdToCartItem(null));
+    toast.success("Coupon removed");
+  };
   return (
     <div className="mb-4 rounded-lg border border-gray-200 bg-white">
       <div className="p-6">
@@ -48,15 +77,46 @@ export default function Checkout() {
                   </div>
                 </li>
               ))}
+              {/* Coupon row */}
+              {validCoupon?.name && (
+                <li className="flex justify-between p-3 text-sm">
+                  <span className="font-semibold">
+                    Discount {validCoupon.discount}%
+                  </span>
+
+                  <span className="flex items-center gap-2 text-gray-600">
+                    {validCoupon.name}
+                    <i
+                      className="bi bi-trash cursor-pointer text-gray-400 hover:text-red-500"
+                      onClick={removeCoupon}
+                    ></i>
+                  </span>
+
+                  <span className="font-semibold text-gray-900">
+                    -${discountAmount}
+                  </span>
+                </li>
+              )}
 
               {/* Total */}
               <li className="flex justify-between p-3 text-base font-semibold">
                 <span>Total</span>
-                <span>${totalOfCartItems}</span>
+                <span>${totalAfterDiscount}</span>
               </li>
             </ul>
 
-            <div className="mt-4"></div>
+            <div className="mt-4">
+              {user?.profile_completed ? (
+                <Link
+                  to="/pay/order"
+                  className="inline-block w-full rounded-lg bg-gray-900 px-4 py-2 text-center text-white hover:bg-gray-800"
+                >
+                  Proceed to payment
+                </Link>
+              ) : (
+                <Alert content="Add your billing details" type="warning" />
+              )}
+            </div>
           </div>
         </div>
       </div>
