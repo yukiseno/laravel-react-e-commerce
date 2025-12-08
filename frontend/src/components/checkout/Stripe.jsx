@@ -43,7 +43,7 @@ export default function Stripe() {
     };
 
     fetchClientSecret();
-  }, [cartItems, validCoupon, token]);
+  }, [cartItems, validCoupon, token, clientSecret, dispatch]);
 
   const appearance = {
     theme: "stripe",
