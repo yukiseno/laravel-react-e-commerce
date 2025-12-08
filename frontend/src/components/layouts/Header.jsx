@@ -3,7 +3,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
@@ -97,7 +97,7 @@ export default function Header() {
                         isActive
                           ? "bg-gray-100 text-gray-900"
                           : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                        "relative rounded-md px-3 py-2 text-sm font-medium"
+                        "flex items-center relative rounded-md px-3 py-2 text-sm font-medium"
                       )
                     }
                   >
@@ -119,7 +119,7 @@ export default function Header() {
                           isActive
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                          "rounded-md px-3 py-2 text-sm font-medium"
+                          "flex items-center rounded-md px-3 py-2 text-sm font-medium"
                         )
                       }
                     >
@@ -133,7 +133,7 @@ export default function Header() {
                           isActive
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                          "rounded-md px-3 py-2 text-sm font-medium"
+                          "flex items-center rounded-md px-3 py-2 text-sm font-medium"
                         )
                       }
                     >
@@ -149,10 +149,11 @@ export default function Header() {
                           isActive
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                          "block rounded-md px-3 py-2 text-base font-medium"
+                          "flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium"
                         )
                       }
                     >
+                      <UserIcon className="h-4 w-4" />
                       {user.name}
                     </NavLink>
                     <button
@@ -175,17 +176,22 @@ export default function Header() {
             <NavLink
               key={item.name}
               to={item.href}
-              end={item.href === "/"}
               className={({ isActive }) =>
                 classNames(
                   isActive
                     ? "bg-gray-100 text-gray-900"
                     : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                  "block rounded-md px-3 py-2 text-base font-medium"
+                  "flex items-center rounded-md px-3 py-2 text-base font-medium"
                 )
               }
             >
-              {item.name}
+              <span>{item.name}</span>
+
+              {item.name === "Cart" && cartItems.length > 0 && (
+                <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-gray-800 px-1 text-xs font-bold text-white">
+                  {cartItems.length}
+                </span>
+              )}
             </NavLink>
           ))}
           {/* Auth links */}
@@ -198,7 +204,7 @@ export default function Header() {
                     isActive
                       ? "bg-gray-100 text-gray-900"
                       : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center gap-3  rounded-md px-3 py-2 text-base font-medium"
                   )
                 }
               >
@@ -212,7 +218,7 @@ export default function Header() {
                     isActive
                       ? "bg-gray-100 text-gray-900"
                       : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center gap-3  rounded-md px-3 py-2 text-base font-medium"
                   )
                 }
               >
@@ -228,15 +234,16 @@ export default function Header() {
                     isActive
                       ? "bg-gray-100 text-gray-900"
                       : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center gap-3  rounded-md px-3 py-2 text-base font-medium"
                   )
                 }
               >
+                <UserIcon className="h-4 w-4" />
                 {user.name}
               </NavLink>
               <button
                 onClick={logoutUser}
-                className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="blflex items-center gap-3 ck w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               >
                 Logout
               </button>
