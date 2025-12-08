@@ -141,12 +141,27 @@ export default function Header() {
                     </NavLink>
                   </>
                 ) : (
-                  <button
-                    onClick={logoutUser}
-                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                  >
-                    Logout
-                  </button>
+                  <>
+                    <NavLink
+                      to="/profile"
+                      className={({ isActive }) =>
+                        classNames(
+                          isActive
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                          "block rounded-md px-3 py-2 text-base font-medium"
+                        )
+                      }
+                    >
+                      {user.name}
+                    </NavLink>
+                    <button
+                      onClick={logoutUser}
+                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    >
+                      Logout
+                    </button>
+                  </>
                 )}
               </div>
             </div>
@@ -205,12 +220,27 @@ export default function Header() {
               </NavLink>
             </>
           ) : (
-            <button
-              onClick={logoutUser}
-              className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            >
-              Logout
-            </button>
+            <>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  classNames(
+                    isActive
+                      ? "bg-gray-100 text-gray-900"
+                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                    "block rounded-md px-3 py-2 text-base font-medium"
+                  )
+                }
+              >
+                {user.name}
+              </NavLink>
+              <button
+                onClick={logoutUser}
+                className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              >
+                Logout
+              </button>
+            </>
           )}
         </div>
       </DisclosurePanel>
