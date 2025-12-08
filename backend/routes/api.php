@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CouponController;
+use App\Http\Controllers\Api\OrderController;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('user/profile/update', [UserController::class, 'UpdateUserProfile']);
     //coupon routes
     Route::post('apply/coupon', [CouponController::class, 'applyCoupon']);
+    //order routes
+    Route::post('store/order', [OrderController::class, 'store']);
+    Route::post('pay/order', [OrderController::class, 'payOrderByStripe']);
 });
 //products routes
 Route::get('products', [ProductController::class, 'index']);
