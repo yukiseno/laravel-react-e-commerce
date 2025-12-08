@@ -44,33 +44,33 @@ export default function CheckoutForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
+    if (!stripe || !elements || isProcessing) return;
 
     setIsProcessing(true);
+    setMessage(null);
 
-    const response = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-      },
-      redirect: "if_required",
-    });
+    try {
+      const response = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
+      });
 
-    if (
-      (response.error && response.error.type === "card_error") ||
-      (response.error && response.error.type === "validation_error")
-    ) {
-      setMessage(response.error.message);
-    } else if (response.paymentIntent.id) {
-      //display success message or redirect user
-      storeOrder();
+      if (response.error) {
+        setMessage(response.error.message);
+        return;
+      }
+
+      if (response.paymentIntent?.status === "succeeded") {
+        await storeOrder();
+      } else {
+        setMessage("Payment was not completed. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Unexpected error occurred. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
-
-    setIsProcessing(false);
   };
 
   return (
