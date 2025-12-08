@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 import Alert from "../layouts/Alert";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import UpdateUserInfo from "../user/UpdateUserInfo";
 export default function Checkout() {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const { cartItems, validCoupon } = useSelector((state) => state.cart);
@@ -41,7 +42,9 @@ export default function Checkout() {
       <div className="p-6">
         <div className="my-5 grid grid-cols-1 gap-8 md:grid-cols-12">
           {/* Left column */}
-          <div className="md:col-span-7"></div>
+          <div className="md:col-span-7">
+            <UpdateUserInfo profile={false} />
+          </div>
 
           {/* Right column */}
           <div className="md:col-span-5 space-y-4">
