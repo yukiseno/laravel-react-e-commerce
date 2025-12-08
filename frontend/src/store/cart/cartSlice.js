@@ -64,11 +64,17 @@ export const cartSlice = createSlice({
     setValidCoupon(state, action) {
       state.validCoupon = action.payload;
     },
+    clearCoupon(state) {
+      state.validCoupon = null;
+    },
     addCouponIdToCartItem(state, action) {
       const coupon_id = action.payload;
       state.cartItems = state.cartItems.map((item) => {
         return { ...item, coupon_id };
       });
+    },
+    clearCartItems(state) {
+      state.cartItems = [];
     },
   },
 });
@@ -81,5 +87,7 @@ export const {
   removeFromCart,
   setValidCoupon,
   addCouponIdToCartItem,
+  clearCoupon,
+  clearCartItems,
 } = cartSlice.actions;
 export default cartReducer;
