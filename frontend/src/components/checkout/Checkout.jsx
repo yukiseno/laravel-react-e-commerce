@@ -9,7 +9,7 @@ import {
 } from "../../store/cart/cartSlice";
 import { toast } from "react-toastify";
 import Alert from "../layouts/Alert";
-
+import { TrashIcon } from "@heroicons/react/24/outline";
 export default function Checkout() {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const { cartItems, validCoupon } = useSelector((state) => state.cart);
@@ -86,10 +86,10 @@ export default function Checkout() {
 
                   <span className="flex items-center gap-2 text-gray-600">
                     {validCoupon.name}
-                    <i
-                      className="bi bi-trash cursor-pointer text-gray-400 hover:text-red-500"
+                    <TrashIcon
+                      className="h-5 w-5 cursor-pointer text-gray-400 hover:text-red-500"
                       onClick={removeCoupon}
-                    ></i>
+                    ></TrashIcon>
                   </span>
 
                   <span className="font-semibold text-gray-900">
