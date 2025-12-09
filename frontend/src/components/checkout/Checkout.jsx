@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import Alert from "../layouts/Alert";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import UpdateUserInfo from "../user/UpdateUserInfo";
+import { formatPrice } from "../../helpers/price";
 export default function Checkout() {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const { cartItems, validCoupon } = useSelector((state) => state.cart);
@@ -72,10 +73,10 @@ export default function Checkout() {
 
                   <div className="ml-auto flex flex-col items-end">
                     <span className="text-sm text-gray-500">
-                      ${item.price} × {item.qty}
+                      {formatPrice(item.price)} × {item.qty}
                     </span>
                     <span className="font-semibold text-gray-900">
-                      ${item.price * item.qty}
+                      {formatPrice(item.price * item.qty)}
                     </span>
                   </div>
                 </li>
@@ -96,7 +97,7 @@ export default function Checkout() {
                   </span>
 
                   <span className="font-semibold text-gray-900">
-                    -${discountAmount}
+                    -{formatPrice(discountAmount)}
                   </span>
                 </li>
               )}
@@ -104,7 +105,7 @@ export default function Checkout() {
               {/* Total */}
               <li className="flex justify-between p-3 text-base font-semibold">
                 <span>Total</span>
-                <span>${totalAfterDiscount}</span>
+                <span>{formatPrice(totalAfterDiscount)}</span>
               </li>
             </ul>
 
