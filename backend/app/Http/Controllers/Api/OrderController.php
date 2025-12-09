@@ -10,7 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Coupon;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -23,6 +23,19 @@ class OrderController extends Controller
             'products' => 'required|array|min:1',
             'payment_intent_id' => 'required|string',
         ]);
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $intent = PaymentIntent::retrieve($request->payment_intent_id);
+
+        if ($intent->status !== 'succeeded') {
+            return response()->json(['error' => 'Payment not completed'], 400);
+        }
+
+        if (($intent->metadata['user_id'] ?? null) != $request->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
 
         return DB::transaction(function () use ($request) {
             $coupon = $this->resolveCoupon($request);
