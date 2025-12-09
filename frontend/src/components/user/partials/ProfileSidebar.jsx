@@ -30,7 +30,15 @@ export default function ProfileSidebar() {
         formData,
         getConfig(token, "multipart/form-data")
       );
-      dispatch(setAuthState({ user: response.data.user, token }));
+      dispatch(
+        setAuthState({
+          user: {
+            ...user,
+            ...response.data.user,
+          },
+          token,
+        })
+      );
       setImage("");
       setLoading(false);
       fileInput.current.value = "";

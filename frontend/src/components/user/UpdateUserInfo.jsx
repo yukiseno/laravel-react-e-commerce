@@ -26,7 +26,15 @@ export default function UpdateUserInfo({ profile }) {
         userInfos,
         getConfig(token)
       );
-      dispatch(setAuthState({ user: response.data.user, token }));
+      dispatch(
+        setAuthState({
+          user: {
+            ...user,
+            ...response.data.user,
+          },
+          token,
+        })
+      );
       setLoading(false);
       toast.success(response.data.message);
     } catch (error) {
