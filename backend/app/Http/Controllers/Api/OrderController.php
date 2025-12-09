@@ -49,6 +49,8 @@ class OrderController extends Controller
         }
         Stripe::setApiKey(config('services.stripe.secret'));
         try {
+            $idempotencyKey = 'checkout-' . $request->user()->id . '-' . md5(json_encode($request->cartItems));
+
             $paymentIntent = PaymentIntent::create(
                 [
                     'amount' => $this->calculateOrderTotal($request->cartItems),
@@ -59,7 +61,7 @@ class OrderController extends Controller
                     ],
                 ],
                 [
-                    'idempotency_key' => 'checkout-' . $request->user()->id,
+                    'idempotency_key' => $idempotencyKey,
                 ]
             );
             //generate the client secret
