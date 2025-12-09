@@ -7,6 +7,7 @@ import parse from "html-react-parser";
 import Slider from "./images/Slider";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart/cartSlice";
+import { formatPrice } from "../../helpers/price";
 
 export default function Product() {
   const [product, setProduct] = useState([]);
@@ -68,7 +69,9 @@ export default function Product() {
                 {product?.name}
               </h5>
 
-              <span className="px-3 py-1 text-sm">${product?.price}</span>
+              <span className="px-3 py-1 text-sm">
+                {formatPrice(product?.price)}
+              </span>
             </div>
 
             {/* DESCRIPTION */}

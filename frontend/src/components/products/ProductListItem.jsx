@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { formatPrice } from "../../helpers/price";
 export default function ProductListItem({ product }) {
   return (
     <Link
@@ -12,7 +13,7 @@ export default function ProductListItem({ product }) {
         className="w-full h-48 object-cover rounded-lg"
       />
       <div className="mt-3 font-semibold">{product.name}</div>
-      <div className="text-gray-600">${product.price}</div>
+      <div className="text-gray-600">{formatPrice(product.price)}</div>
       <div className="flex gap-2 mt-2">
         {product.sizes?.map((size) => (
           <span key={size.id} className="text-xs border px-2 py-1 rounded">
