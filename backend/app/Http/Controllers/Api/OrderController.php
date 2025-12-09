@@ -36,8 +36,7 @@ class OrderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-
-        return DB::transaction(function () use ($request) {
+        return DB::transaction(function () use ($request, $intent) {
             $coupon = $this->resolveCoupon($request);
 
             $subtotal = 0;
@@ -51,6 +50,13 @@ class OrderController extends Controller
                 : 0;
 
             $total = $subtotal - $discountTotal;
+            $expectedAmount = $total * 100;
+            $stripeAmount   = $intent->amount_received;
+            if ($stripeAmount !== $expectedAmount) {
+                return response()->json([
+                    'error' => 'Payment amount mismatch'
+                ], 400);
+            }
 
             $order = Order::create([
                 'user_id' => $request->user()->id,
