@@ -7,6 +7,7 @@ import {
 } from "../../store/cart/cartSlice";
 import Alert from "../layouts/Alert";
 import { Link } from "react-router-dom";
+import { formatPrice } from "../../helpers/price";
 export default function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -71,7 +72,9 @@ export default function Cart() {
                             </div>
                           </td>
 
-                          <td className="py-4 px-2">${item.price}</td>
+                          <td className="py-4 px-2">
+                            {formatPrice(item.price)}
+                          </td>
 
                           <td className="py-4 px-2">
                             <div
@@ -89,7 +92,7 @@ export default function Cart() {
                           </td>
 
                           <td className="py-4 px-2 font-semibold">
-                            ${item.qty * item.price}
+                            {formatPrice(item.qty * item.price)}
                           </td>
 
                           <td className="py-4 px-2">
@@ -109,7 +112,7 @@ export default function Cart() {
                 {/* Total */}
                 <div className="mt-6 flex justify-center">
                   <div className="rounded-lg border-2 border-gray-900 px-4 py-2 font-bold">
-                    Total: ${total}
+                    Total: {formatPrice(total)}
                   </div>
                 </div>
               </>
