@@ -25,7 +25,9 @@ class UserResource extends JsonResource
             'phone_number' => $this->phone_number,
             'profile_image' => $this->image_path,
             'profile_completed' => $this->profile_completed,
-            'orders' => $this->orders,
+            'orders' => OrderResource::collection(
+                $this->whenLoaded('orders')
+            ),
         ];
     }
 }

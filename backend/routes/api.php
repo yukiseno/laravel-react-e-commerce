@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\ProductController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', function (Request $request) {
         return [
-            'user' => UserResource::make($request->user()),
+            'user' => UserResource::make($request->user()->load('orders.items')),
             'access_token' => $request->bearerToken()
         ];
     });
