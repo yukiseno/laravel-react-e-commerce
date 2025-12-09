@@ -38,9 +38,10 @@
                                 @enderror
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                    id="floatingInput" name="price" placeholder="Price" value="{{ old('price') }}">
-                                <label for="floatingInput">Price*</label>
+                                <input type="number" step="0.01"
+                                    class="form-control @error('price') is-invalid @enderror" id="price" name="price"
+                                    placeholder="Price" value="{{ old('price') }}">
+                                <label for="price">Price*</label>
                                 @error('price')
                                     <span class="invalid-feedback">
                                         <strong>{{ $message }}</strong>

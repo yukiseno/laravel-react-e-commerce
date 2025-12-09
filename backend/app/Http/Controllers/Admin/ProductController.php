@@ -42,31 +42,35 @@ class ProductController extends Controller
      */
     public function store(AddProductRequest $request)
     {
-        if ($request->validated()) {
-            $data = $request->all();
-            $data['thumbnail'] = $this->saveImage($request->file('thumbnail'));
-            //check if the admin upload the first image
-            if ($request->has('first_image')) {
-                $data['first_image'] = $this->saveImage($request->file('first_image'));
-            }
-            //check if the admin upload the second image
-            if ($request->has('second_image')) {
-                $data['second_image'] = $this->saveImage($request->file('second_image'));
-            }
-            //check if the admin upload the third image
-            if ($request->has('third_image')) {
-                $data['third_image'] = $this->saveImage($request->file('third_image'));
-            }
-            //add the slug
-            $data['slug'] = Str::slug($request->name);
-            $product = Product::create($data);
-            $product->colors()->sync($request->color_id);
-            $product->sizes()->sync($request->size_id);
+        $data = $request->validated();
 
-            return redirect()->route('admin.products.index')->with([
-                'success' => 'Product has been added successfully'
-            ]);
+        // convert dollars → cents
+        $data['price'] = (int) round($data['price'] * 100);
+
+        $data['slug'] = Str::slug($data['name']);
+
+        $data['thumbnail'] = $this->saveImage($request->file('thumbnail'));
+
+        if ($request->hasFile('first_image')) {
+            $data['first_image'] = $this->saveImage($request->file('first_image'));
         }
+
+        if ($request->hasFile('second_image')) {
+            $data['second_image'] = $this->saveImage($request->file('second_image'));
+        }
+
+        if ($request->hasFile('third_image')) {
+            $data['third_image'] = $this->saveImage($request->file('third_image'));
+        }
+
+        $product = Product::create($data);
+
+        $product->colors()->sync($request->color_id);
+        $product->sizes()->sync($request->size_id);
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Product has been added successfully');
     }
 
     /**
