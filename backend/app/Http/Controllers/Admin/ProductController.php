@@ -101,47 +101,44 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        if ($request->validated()) {
-            $data = $request->all();
-            if ($request->has('thumbnail')) {
-                //remove the old thumbnail
-                $this->removeProductImageFromStorage($product->thumbnail);
-                //store the new thumbnail
-                $data['thumbnail'] = $this->saveImage($request->file('thumbnail'));
-            }
-            //check if the admin upload the first image
-            if ($request->has('first_image')) {
-                //remove the old first image
-                $this->removeProductImageFromStorage($product->first_image);
-                //store the new first image
-                $data['first_image'] = $this->saveImage($request->file('first_image'));
-            }
-            //check if the admin upload the second image
-            if ($request->has('second_image')) {
-                //remove the old second image
-                $this->removeProductImageFromStorage($product->second_image);
-                //store the new second image
-                $data['second_image'] = $this->saveImage($request->file('second_image'));
-            }
-            //check if the admin upload the third image
-            if ($request->has('third_image')) {
-                //remove the old third image
-                $this->removeProductImageFromStorage($product->third_image);
-                //store the new third image
-                $data['third_image'] = $this->saveImage($request->file('third_image'));
-            }
-            //add the slug
-            $data['slug'] = Str::slug($request->name);
-            $data['status'] = $request->status;
-            $product->update($data);
-            $product->colors()->sync($request->color_id);
-            $product->sizes()->sync($request->size_id);
+        $data = $request->validated();
 
-            return redirect()->route('admin.products.index')->with([
-                'success' => 'Product has been updated successfully'
-            ]);
+        // convert dollars → cents
+        $data['price'] = (int) round($data['price'] * 100);
+
+        if ($request->hasFile('thumbnail')) {
+            $this->removeProductImageFromStorage($product->thumbnail);
+            $data['thumbnail'] = $this->saveImage($request->file('thumbnail'));
         }
+
+        if ($request->hasFile('first_image')) {
+            $this->removeProductImageFromStorage($product->first_image);
+            $data['first_image'] = $this->saveImage($request->file('first_image'));
+        }
+
+        if ($request->hasFile('second_image')) {
+            $this->removeProductImageFromStorage($product->second_image);
+            $data['second_image'] = $this->saveImage($request->file('second_image'));
+        }
+
+        if ($request->hasFile('third_image')) {
+            $this->removeProductImageFromStorage($product->third_image);
+            $data['third_image'] = $this->saveImage($request->file('third_image'));
+        }
+
+        $data['slug'] = Str::slug($data['name']);
+        $data['status'] = $request->status;
+
+        $product->update($data);
+
+        $product->colors()->sync($request->color_id);
+        $product->sizes()->sync($request->size_id);
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Product has been updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
