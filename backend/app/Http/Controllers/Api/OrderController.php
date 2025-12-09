@@ -6,6 +6,7 @@ use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -86,8 +87,10 @@ class OrderController extends Controller
             }
 
             return response()->json([
-                'order_id' => $order->id,
-                'user' => UserResource::make($request->user()),
+                'message' => 'Order placed successfully',
+                'order' => new OrderResource(
+                    $order->load(['items'])
+                ),
             ]);
         });
     }

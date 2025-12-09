@@ -21,9 +21,14 @@ export const userSlice = createSlice({
       state.token = "";
       state.isLoggedIn = false;
     },
+    addOrder: (state, action) => {
+      if (state.user?.orders) {
+        state.user.orders.unshift(action.payload);
+      }
+    },
   },
 });
 
 const userReducer = userSlice.reducer;
-export const { setAuthState, logout } = userSlice.actions;
+export const { setAuthState, logout, addOrder } = userSlice.actions;
 export default userReducer;

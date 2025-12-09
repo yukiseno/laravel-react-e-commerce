@@ -8,7 +8,7 @@ import {
   clearCoupon,
   clearClientSecret,
 } from "../../store/cart/cartSlice";
-import { setAuthState } from "../../store/user/userSlice";
+import { addOrder, setAuthState } from "../../store/user/userSlice";
 import { toast } from "react-toastify";
 
 export default function CheckoutForm() {
@@ -38,7 +38,8 @@ export default function CheckoutForm() {
       dispatch(clearClientSecret());
       dispatch(clearCartItems());
       dispatch(clearCoupon());
-      dispatch(setAuthState({ user: response.data.user, token }));
+      //dispatch(setAuthState({ user: response.data.user, token }));
+      dispatch(addOrder(response.data.order));
       setIsProcessing(false);
       toast.success("Payment done successfully");
     } catch (error) {
