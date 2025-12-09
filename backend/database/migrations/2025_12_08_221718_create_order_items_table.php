@@ -14,18 +14,32 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('order_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-            $table->foreignId('color_id')->constrained()->restrictOnDelete();
-            $table->foreignId('size_id')->constrained()->restrictOnDelete();
+            $table->foreignId('product_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            // Snapshot fields (DO NOT change after purchase)
+            $table->string('product_name');
+
+            $table->foreignId('color_id')
+                ->constrained()
+                ->restrictOnDelete();
+
+            $table->foreignId('size_id')
+                ->constrained()
+                ->restrictOnDelete();
 
             $table->string('color_name');
             $table->string('size_name');
 
+            // Money in cents
             $table->integer('qty');
-            $table->integer('price');
-            $table->integer('subtotal');
+            $table->integer('price');     // unit price at time of purchase
+            $table->integer('subtotal');  // price * qty
 
             $table->timestamps();
 

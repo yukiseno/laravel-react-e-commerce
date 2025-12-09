@@ -23,8 +23,12 @@ return new class extends Migration
                 ->constrained()
                 ->nullOnDelete();
 
-            $table->integer('total'); // cents
-            $table->string('status')->default('pending');
+            // Money fields (ALL in cents)
+            $table->integer('subtotal');        // sum of items before discount
+            $table->integer('discount_total');  // discount amount
+            $table->integer('total');           // subtotal - discount_total
+
+            $table->string('status')->default('pending'); // pending, paid, shipped
             $table->datetime('delivered_at')->nullable();
 
             $table->string('payment_intent_id')
