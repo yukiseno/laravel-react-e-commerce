@@ -21,11 +21,12 @@ export default function CheckoutForm() {
   const [message, setMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const storeOrder = async () => {
+  const storeOrder = async (paymentIntentId) => {
     try {
       const response = await axiosRequest.post(
         "store/order",
         {
+          payment_intent_id: paymentIntentId,
           products: cartItems.map((item) => ({
             ...item,
             coupon_id: validCoupon ? validCoupon.id : null,
@@ -66,7 +67,7 @@ export default function CheckoutForm() {
       }
 
       if (response.paymentIntent?.status === "succeeded") {
-        await storeOrder();
+        await storeOrder(response.paymentIntent.id);
       } else {
         setMessage("Payment was not completed. Please try again.");
       }
