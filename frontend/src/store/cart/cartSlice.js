@@ -5,6 +5,7 @@ const initialState = {
   cartItems: [],
   validCoupon: null,
   clientSecret: null,
+  paymentIntentId: null,
 };
 
 export const cartSlice = createSlice({
@@ -76,12 +77,20 @@ export const cartSlice = createSlice({
     },
     clearCartItems(state) {
       state.cartItems = [];
+      state.clientSecret = null;
+      state.paymentIntentId = null;
     },
     setClientSecret: (state, action) => {
       state.clientSecret = action.payload;
     },
     clearClientSecret: (state) => {
       state.clientSecret = null;
+    },
+    resetCheckout(state) {
+      console.log("resetcheckout");
+      state.clientSecret = null;
+      state.paymentIntentId = null;
+      state.validCoupon = null;
     },
   },
 });
@@ -98,5 +107,6 @@ export const {
   clearCartItems,
   setClientSecret,
   clearClientSecret,
+  resetCheckout,
 } = cartSlice.actions;
 export default cartReducer;

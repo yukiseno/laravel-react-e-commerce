@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import { axiosRequest, getConfig } from "../../helpers/config";
 import { setAuthState, logout } from "../../store/user/userSlice";
+import { resetCheckout } from "../../store/cart/cartSlice";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Cart", href: "/cart" },
@@ -46,6 +47,7 @@ export default function Header() {
     try {
       await axiosRequest.post("user/logout", null, getConfig(token));
       dispatch(logout());
+      dispatch(resetCheckout());
     } catch (error) {
       console.log(error);
     }
