@@ -27,25 +27,28 @@ export default function UserOrders() {
       <ProfileSidebar />
 
       <div className="w-full md:w-2/3">
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="rounded-lg border border-black/10 bg-white p-4 shadow-sm">
           {user?.orders?.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full border border-gray-200 text-sm">
-                <thead className="bg-gray-100">
+              <table className="w-full text-sm">
+                <thead className="border-b border-b-black/10">
                   <tr>
-                    <th className="px-3 py-2 text-left border-b">#</th>
-                    <th className="px-3 py-2 text-left border-b">Product</th>
-                    <th className="px-3 py-2 text-left border-b">Price</th>
-                    <th className="px-3 py-2 text-left border-b">Qty</th>
-                    <th className="px-3 py-2 text-left border-b">Total</th>
-                    <th className="px-3 py-2 text-left border-b">Ordered</th>
-                    <th className="px-3 py-2 text-left border-b">Delivered</th>
+                    <th className="px-3 py-2 text-left">#</th>
+                    <th className="px-3 py-2 text-left">Product</th>
+                    <th className="px-3 py-2 text-left">Price</th>
+                    <th className="px-3 py-2 text-left">Qty</th>
+                    <th className="px-3 py-2 text-left">Total</th>
+                    <th className="px-3 py-2 text-left">Ordered</th>
+                    <th className="px-3 py-2 text-left">Delivered</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {user.orders.slice(0, ordersToShow).map((order, index) => (
-                    <tr key={order.id} className="border-b hover:bg-gray-50">
+                    <tr
+                      key={order.id}
+                      className="border-b border-b-black/10 hover:bg-gray-50"
+                    >
                       <td className="px-3 py-2">{index + 1}</td>
 
                       <td className="px-3 py-2 space-y-1">

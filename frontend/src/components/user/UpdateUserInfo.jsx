@@ -44,9 +44,9 @@ export default function UpdateUserInfo({ profile }) {
   };
   return (
     <div className="w-full md:w-2/3">
-      <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div className="rounded-lg border border-black/10 bg-white shadow-sm">
         {/* Header */}
-        <div className="border-b bg-white px-4 py-3">
+        <div className="border-b border-b-black/10 bg-white px-4 py-3 rounded-t-lg">
           <h5 className="mt-2 text-center text-lg font-medium text-gray-900">
             {profile ? "User Details" : "Billing Details"}
           </h5>
