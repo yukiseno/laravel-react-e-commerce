@@ -50,7 +50,7 @@ class OrderController extends Controller
                 : 0;
 
             $total = $subtotal - $discountTotal;
-            $expectedAmount = $total * 100;
+            $expectedAmount = $total;
             $stripeAmount   = $intent->amount_received;
             if ($stripeAmount !== $expectedAmount) {
                 return response()->json([
