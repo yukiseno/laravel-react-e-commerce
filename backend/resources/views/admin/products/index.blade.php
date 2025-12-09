@@ -52,7 +52,7 @@
                                             @endforeach
                                         </td>
                                         <td>{{ $product->qty }}</td>
-                                        <td>{{ $product->price }}</td>
+                                        <td>${{ $product->price_dollars }}</td>
                                         <td>
                                             <div class="d-flex flex-column">
                                                 <img src="{{ asset($product->thumbnail) }}" alt="{{ $product->name }}"
