@@ -87,13 +87,13 @@ export default function UserOrders() {
                       </td>
 
                       <td className="px-3 py-2 text-gray-600">
-                        {order.created_at}
+                        {new Date(order.created_at).toLocaleDateString()}
                       </td>
 
                       <td className="px-3 py-2">
                         {order.delivered_at ? (
                           <span className="text-green-600">
-                            {order.delivered_at}
+                            {new Date(order.delivered_at).toLocaleDateString()}
                           </span>
                         ) : (
                           <span className="italic text-gray-400">Pending…</span>
