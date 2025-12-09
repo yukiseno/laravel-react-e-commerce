@@ -3,17 +3,22 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  UserIcon,
+  HomeIcon,
+  ShoppingCartIcon,
+  ArrowLeftStartOnRectangleIcon,
+  ArrowLeftEndOnRectangleIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import { axiosRequest, getConfig } from "../../helpers/config";
 import { setAuthState, logout } from "../../store/user/userSlice";
 import { resetCheckout } from "../../store/cart/cartSlice";
-const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Cart", href: "/cart" },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -84,7 +89,7 @@ export default function Header() {
             </div>
 
             <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
+              <div className="flex space-x-2">
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
@@ -92,10 +97,11 @@ export default function Header() {
                       isActive
                         ? "bg-gray-100 text-gray-900"
                         : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                      "flex items-center relative rounded-md px-3 py-2 text-sm font-medium"
+                      "flex items-center gap-1 relative rounded-md px-3 py-2 text-sm font-medium"
                     )
                   }
                 >
+                  <HomeIcon className="h-4 w-4" />
                   Home
                 </NavLink>
                 {/* Auth links */}
@@ -108,10 +114,11 @@ export default function Header() {
                           isActive
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                          "flex items-center rounded-md px-3 py-2 text-sm font-medium"
+                          "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium"
                         )
                       }
                     >
+                      <ArrowLeftEndOnRectangleIcon className="w-4 h-4" />
                       Login
                     </NavLink>
 
@@ -122,10 +129,11 @@ export default function Header() {
                           isActive
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                          "flex items-center rounded-md px-3 py-2 text-sm font-medium"
+                          "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium"
                         )
                       }
                     >
+                      <UserPlusIcon className="w-4 h-4" />
                       Register
                     </NavLink>
                   </>
@@ -138,7 +146,7 @@ export default function Header() {
                           isActive
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                          "flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium"
+                          "flex items-center gap-1 rounded-md px-3 py-2 text-base font-medium"
                         )
                       }
                     >
@@ -147,28 +155,32 @@ export default function Header() {
                     </NavLink>
                     <button
                       onClick={logoutUser}
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      className="flex items-center gap-1 rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                     >
+                      <ArrowLeftStartOnRectangleIcon className="h-4 w-4" />
                       Logout
                     </button>
-                    <NavLink
-                      to="/cart"
-                      className={({ isActive }) =>
-                        classNames(
-                          isActive
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                          "flex items-center relative rounded-md px-3 py-2 text-sm font-medium"
-                        )
-                      }
-                    >
-                      Cart
-                      {cartItems.length > 0 && (
-                        <span className="ml-1">({cartItems.length})</span>
-                      )}
-                    </NavLink>
                   </>
                 )}
+                <NavLink
+                  to="/cart"
+                  className={({ isActive }) =>
+                    classNames(
+                      isActive
+                        ? "bg-gray-100 text-gray-900"
+                        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                      "flex items-center relative gap-1 rounded-md px-3 py-2 text-sm font-medium"
+                    )
+                  }
+                >
+                  <ShoppingCartIcon className="h-4 w-4" />
+                  <span>
+                    Cart
+                    {cartItems.length > 0 && (
+                      <span className="ml-1">({cartItems.length})</span>
+                    )}
+                  </span>
+                </NavLink>
               </div>
             </div>
           </div>
@@ -188,6 +200,7 @@ export default function Header() {
               )
             }
           >
+            <HomeIcon className="h-4 w-4 mr-1" />
             Home
           </NavLink>
           {/* Auth links */}
@@ -200,10 +213,11 @@ export default function Header() {
                     isActive
                       ? "bg-gray-100 text-gray-900"
                       : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                    "flex items-center gap-3  rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center rounded-md px-3 py-2 text-base font-medium"
                   )
                 }
               >
+                <ArrowLeftEndOnRectangleIcon className="w-4 h-4 mr-1" />
                 Login
               </NavLink>
 
@@ -214,10 +228,11 @@ export default function Header() {
                     isActive
                       ? "bg-gray-100 text-gray-900"
                       : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                    "flex items-center gap-3  rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center ounded-md px-3 py-2 text-base font-medium"
                   )
                 }
               >
+                <UserPlusIcon className="w-4 h-4 mr-1" />
                 Register
               </NavLink>
             </>
@@ -230,17 +245,18 @@ export default function Header() {
                     isActive
                       ? "bg-gray-100 text-gray-900"
                       : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                    "flex items-center gap-3  rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center rounded-md px-3 py-2 text-base font-medium"
                   )
                 }
               >
-                <UserIcon className="h-4 w-4" />
+                <UserIcon className="h-4 w-4 mr-1" />
                 {user.name}
               </NavLink>
               <button
                 onClick={logoutUser}
-                className="blflex items-center gap-3 ck w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="blflex items-center ck w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               >
+                <ArrowLeftStartOnRectangleIcon className="h-4 w-4 mr-1 inline" />
                 Logout
               </button>
               <NavLink
@@ -254,6 +270,7 @@ export default function Header() {
                   )
                 }
               >
+                <ShoppingCartIcon className="h-4 w-4 mr-1" />
                 Cart
                 {cartItems.length > 0 && (
                   <span className="ml-1">({cartItems.length})</span>
