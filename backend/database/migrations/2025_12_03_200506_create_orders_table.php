@@ -32,8 +32,9 @@ return new class extends Migration
             $table->datetime('delivered_at')->nullable();
 
             $table->string('payment_intent_id')
-                ->nullable()
-                ->index();
+                ->nullable();
+            $table->unique('payment_intent_id');
+
 
             $table->timestamps();
         });
