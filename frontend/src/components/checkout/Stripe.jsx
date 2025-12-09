@@ -13,11 +13,15 @@ export default function Stripe() {
     (state) => state.cart
   );
   const dispatch = useDispatch();
-
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    if (hasFetched.current) return;
+    dispatch(setClientSecret(null));
+    hasFetched.current = false;
+  }, [dispatch]); // clear stale intent on entry
+
+  useEffect(() => {
+    if (hasFetched.current || clientSecret) return;
     if (!cartItems.length || !token) return;
 
     hasFetched.current = true;
