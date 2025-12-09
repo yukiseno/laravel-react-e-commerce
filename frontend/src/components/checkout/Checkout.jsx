@@ -25,7 +25,7 @@ export default function Checkout() {
     0
   );
   const discountAmount = validCoupon?.discount
-    ? (totalOfCartItems * validCoupon.discount) / 100
+    ? Math.round((totalOfCartItems * validCoupon.discount) / 100)
     : 0;
   const totalAfterDiscount = totalOfCartItems - discountAmount;
   const removeCoupon = () => {
