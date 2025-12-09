@@ -12,7 +12,7 @@ export default function Profile() {
   }, [isLoggedIn, navigate]);
   console.log("Profile component");
   return (
-    <div className="flex">
+    <div className="flex my-8 gap-6">
       <ProfileSidebar />
       <UpdateUserInfo profile={true} />
     </div>

@@ -54,7 +54,7 @@ export default function ProfileSidebar() {
   return (
     <div className="w-full md:w-1/3">
       {/* Profile Card */}
-      <div className="rounded-lg border bg-white p-4 shadow-sm">
+      <div className="rounded-lg border border-black/10 bg-white p-4 shadow-sm">
         <div className="flex flex-col items-center justify-center">
           <img
             src={user?.profile_image}
@@ -90,7 +90,7 @@ export default function ProfileSidebar() {
       </div>
 
       {/* Info List */}
-      <ul className="mt-4 divide-y rounded-lg border bg-white text-sm">
+      <ul className="mt-4 divide-y divide-black/10 rounded-lg border border-black/10 bg-white text-sm">
         <li className="flex items-center gap-2 p-3">
           <UserIcon className="h-4 w-4 text-gray-500" />
           <span>{user?.name}</span>

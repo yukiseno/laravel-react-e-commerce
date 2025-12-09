@@ -23,10 +23,10 @@ export default function UserOrders() {
   };
   console.log(user?.orders);
   return (
-    <div className="flex">
+    <div className="flex my-8 gap-6">
       <ProfileSidebar />
 
-      <div className="col-span-12 md:col-span-8">
+      <div className="w-full md:w-2/3">
         <div className="bg-white shadow rounded-lg p-6">
           {user?.orders?.length > 0 ? (
             <div className="overflow-x-auto">
