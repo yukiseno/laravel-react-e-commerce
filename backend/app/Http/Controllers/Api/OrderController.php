@@ -3,85 +3,122 @@
 namespace App\Http\Controllers\Api;
 
 use Stripe\Stripe;
-use App\Models\Order;
 use Stripe\PaymentIntent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Coupon;
-use ErrorException;
+use DB;
 
 class OrderController extends Controller
 {
     /**
-     * Store new order
+     * Store order AFTER successful payment
      */
     public function store(Request $request)
     {
-        $couponId = null;
-        if ($request->has('coupon') && !empty($request->coupon['id'])) {
-            $couponId = $request->coupon['id'];
-        } elseif (isset($request->products[0]['coupon_id']) && !empty($request->products[0]['coupon_id'])) {
-            $couponId = $request->products[0]['coupon_id'];
-        }
+        $request->validate([
+            'products' => 'required|array|min:1',
+            'payment_intent_id' => 'required|string',
+        ]);
 
-        foreach ($request->products as $product) {
+        return DB::transaction(function () use ($request) {
+            $coupon = $this->resolveCoupon($request);
+
+            $subtotal = 0;
+
+            foreach ($request->products as $product) {
+                $subtotal += $product['price'] * $product['qty'];
+            }
+
+            $discountTotal = $coupon
+                ? (int) round($subtotal * ($coupon->discount / 100))
+                : 0;
+
+            $total = $subtotal - $discountTotal;
+
             $order = Order::create([
-                'qty' => $product['qty'],
                 'user_id' => $request->user()->id,
-                'coupon_id' => $couponId,
-                'total' => $this->calculateTotal($product['price'], $product['qty'], $product['coupon_id']),
+                'coupon_id' => $coupon?->id,
+                'subtotal' => $subtotal,
+                'discount_total' => $discountTotal,
+                'total' => $total,
+                'payment_intent_id' => $request->payment_intent_id,
+                'status' => 'paid',
             ]);
-            $order->products()->attach($product['product_id']);
-        }
+
+            foreach ($request->products as $product) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product['product_id'],
+                    'product_name' => $product['name'],
+
+                    'color_id' => $product['color_id'],
+                    'size_id' => $product['size_id'],
+                    'color_name' => $product['color'],
+                    'size_name' => $product['size'],
+
+                    'qty' => $product['qty'],
+                    'price' => $product['price'],      // unit price (cents)
+                    'subtotal' => $product['price'] * $product['qty'],
+                ]);
+            }
+
+            return response()->json([
+                'order_id' => $order->id,
+                'user' => UserResource::make($request->user()),
+            ]);
+        });
+    }
+
+    /**
+     * Create Stripe PaymentIntent
+     */
+    public function payOrderByStripe(Request $request)
+    {
+        $request->validate([
+            'cartItems' => 'required|array|min:1',
+        ]);
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $amount = $this->calculateOrderTotal($request->cartItems);
+
+        $idempotencyKey =
+            'checkout-' . $request->user()->id . '-' . md5(json_encode($request->cartItems));
+
+        $intent = PaymentIntent::create(
+            [
+                'amount' => $amount,
+                'currency' => 'usd',
+                'description' => 'T-Shirt Store Order',
+                'metadata' => [
+                    'user_id' => $request->user()->id,
+                ],
+            ],
+            [
+                'idempotency_key' => $idempotencyKey,
+            ]
+        );
+
         return response()->json([
-            'user' => UserResource::make($request->user())
+            'clientSecret' => $intent->client_secret,
+            'paymentIntentId' => $intent->id,
         ]);
     }
 
     /**
-     * Pay order using stripe
+     * Update PaymentIntent amount (cart changed)
      */
-    public function payOrderByStripe(Request $request)
-    {
-        if (empty($request->cartItems)) {
-            return response()->json(['error' => 'Cart is empty'], 400);
-        }
-        Stripe::setApiKey(config('services.stripe.secret'));
-        try {
-            $idempotencyKey = 'checkout-' . $request->user()->id . '-' . md5(json_encode($request->cartItems));
-
-            $paymentIntent = PaymentIntent::create(
-                [
-                    'amount' => $this->calculateOrderTotal($request->cartItems),
-                    'currency' => 'usd',
-                    'description' => 'React T-shirts Store',
-                    'metadata' => [
-                        'user_id' => $request->user()->id,
-                    ],
-                ],
-                [
-                    'idempotency_key' => $idempotencyKey,
-                ]
-            );
-            //generate the client secret
-            $output = [
-                'clientSecret' => $paymentIntent->client_secret,
-                'paymentIntentId' => $paymentIntent->id,
-            ];
-            //send the client secret to the front end
-            return response()->json($output);
-        } catch (ErrorException $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ]);
-        }
-    }
     public function updatePaymentIntent(Request $request)
     {
-        if (empty($request->cartItems)) {
-            return response()->json(['error' => 'Cart is empty'], 400);
-        }
+        $request->validate([
+            'cartItems' => 'required|array|min:1',
+            'payment_intent_id' => 'required|string',
+        ]);
+
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $intent = PaymentIntent::retrieve($request->payment_intent_id);
@@ -90,45 +127,61 @@ class OrderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        if (!in_array($intent->status, ['requires_payment_method', 'requires_confirmation'])) {
-            return response()->json([
-                'error' => 'PaymentIntent cannot be updated'
-            ], 400);
+        if (!in_array($intent->status, [
+            'requires_payment_method',
+            'requires_confirmation',
+        ])) {
+            return response()->json(['error' => 'Cannot update intent'], 400);
         }
-
 
         $amount = $this->calculateOrderTotal($request->cartItems);
 
-        $intent = PaymentIntent::update(
-            $intent->id,
-            ['amount' => $amount]
-        );
+        $intent = PaymentIntent::update($intent->id, [
+            'amount' => $amount,
+        ]);
 
         return response()->json([
             'clientSecret' => $intent->client_secret,
         ]);
     }
 
-
-    public function calculateOrderTotal($items)
+    /**
+     * Calculate cart total (cents)
+     */
+    private function calculateOrderTotal(array $items): int
     {
-        $total = 0;
+        $subtotal = 0;
+
         foreach ($items as $item) {
-            $total += $this->calculateTotal($item['price'], $item['qty'], $item['coupon_id']);
+            $subtotal += $item['price'] * $item['qty'];
         }
-        return $total * 100;
-    }
 
-    public function calculateTotal($price, $qty, $coupon_id)
-    {
-        $discount = 0;
-        $total = $price * $qty;
-        $coupon = Coupon::find($coupon_id);
-        if ($coupon) {
-            if ($coupon->checkIfValid()) {
-                $discount = $total * $coupon->discount / 100;
+        if (!empty($items[0]['coupon_id'])) {
+            $coupon = Coupon::find($items[0]['coupon_id']);
+
+            if ($coupon && $coupon->checkIfValid()) {
+                $discount = (int) round($subtotal * ($coupon->discount / 100));
+                return $subtotal - $discount;
             }
         }
-        return $total - $discount;
+
+        return $subtotal;
+    }
+
+    /**
+     * Resolve coupon once per order
+     */
+    private function resolveCoupon(Request $request): ?Coupon
+    {
+        $couponId =
+            $request->coupon['id']
+            ?? $request->products[0]['coupon_id']
+            ?? null;
+
+        if (!$couponId) return null;
+
+        $coupon = Coupon::find($couponId);
+
+        return $coupon && $coupon->checkIfValid() ? $coupon : null;
     }
 }
