@@ -17,7 +17,7 @@
                         </a>
                     </div>
                     <hr>
-                    <table class="table">
+                    <table class="table paging-table">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>

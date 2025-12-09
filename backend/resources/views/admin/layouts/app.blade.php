@@ -78,7 +78,7 @@
     <script>
         $(document).ready(function() {
             //datatables
-            $('.table').DataTable();
+            $('.paging-table').DataTable();
             //summernote
             $('.summernote').summernote();
             //Display summernote dropdown menu
