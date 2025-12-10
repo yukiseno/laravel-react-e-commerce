@@ -9,6 +9,7 @@ import Login from "./components/user/Login";
 import Profile from "./components/user/Profile";
 import PayByStripe from "./components/checkout/PayByStripe";
 import UserOrders from "./components/user/UserOrders";
+import PageNotFound from "./components/404/PageNotFound";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login/" element={<Login />} />
         <Route path="/pay/order" element={<PayByStripe />} />
         <Route path="/user/orders" element={<UserOrders />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );
