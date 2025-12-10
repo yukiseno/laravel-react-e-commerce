@@ -145,6 +145,104 @@ cd frontend && npm run dev
 
 [API documentation available in `/backend/CLAUDE.md` or visit the project wiki](./backend/CLAUDE.md)
 
+## Deployment & Production Guidelines
+
+### Backend Deployment
+
+1. **Environment Setup**
+   ```bash
+   # Set production environment variables in .env
+   APP_ENV=production
+   APP_DEBUG=false
+   DB_HOST=your_production_db_host
+   DB_DATABASE=your_production_db
+   STRIPE_SECRET_KEY=your_live_stripe_key
+   ```
+
+2. **Pre-Deployment**
+   ```bash
+   cd backend
+   
+   # Install dependencies
+   composer install --no-dev --optimize-autoloader
+   
+   # Run migrations
+   php artisan migrate --force
+   
+   # Cache configuration
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   ```
+
+3. **Web Server Configuration**
+   - Use Nginx or Apache with PHP-FPM
+   - Point document root to `/public` directory
+   - Enable HTTPS/SSL certificates
+   - Set proper file permissions:
+     ```bash
+     chmod -R 755 storage
+     chmod -R 755 bootstrap/cache
+     ```
+
+### Frontend Deployment
+
+1. **Build for Production**
+   ```bash
+   cd frontend
+   
+   # Set production API endpoint in .env
+   VITE_API_BASE_URL=https://your-api.com
+   VITE_STRIPE_KEY=your_live_stripe_key
+   
+   # Build
+   npm run build
+   ```
+
+2. **Deployment**
+   - Deploy the `dist/` folder to your web server
+   - Use a CDN for static assets (optional but recommended)
+   - Enable gzip compression
+   - Set proper cache headers for production
+
+3. **Hosting Options**
+   - Vercel, Netlify, GitHub Pages
+   - AWS S3 + CloudFront
+   - Traditional web hosting with Node.js or static hosting
+
+### Environment Variables Checklist
+
+**Backend (.env)**
+- `APP_ENV=production`
+- `APP_DEBUG=false`
+- `APP_URL=https://your-domain.com`
+- `DB_*` (production database credentials)
+- `STRIPE_SECRET_KEY=sk_live_xxx`
+- `SANCTUM_STATEFUL_DOMAINS=your-domain.com`
+
+**Frontend (.env)**
+- `VITE_API_BASE_URL=https://your-api.com`
+- `VITE_STRIPE_KEY=pk_live_xxx`
+
+### Security Considerations
+
+- ✅ Keep `.env` files out of version control (use `.env.example`)
+- ✅ Use HTTPS/SSL for all communications
+- ✅ Validate and sanitize all user inputs
+- ✅ Keep dependencies updated regularly
+- ✅ Use environment-specific configurations
+- ✅ Enable CORS properly for frontend domain
+- ✅ Use strong database passwords
+- ✅ Monitor and log errors in production
+
+### Monitoring & Maintenance
+
+- Monitor API response times and errors
+- Set up automated backups for database
+- Log all transactions and user activities
+- Monitor server resource usage (CPU, memory, disk)
+- Keep framework and dependencies updated
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
