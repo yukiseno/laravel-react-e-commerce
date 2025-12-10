@@ -4,7 +4,7 @@
   "description": "A modern full-stack e-commerce application built with Laravel 11 and React 18",
   "private": true,
   "scripts": {
-    "setup": "npm run setup:backend && npm run setup:frontend",
+    "setup": "npm install && npm run setup:backend && npm run setup:frontend",
     "setup:backend": "cd backend && composer install && cp .env.example .env && php artisan key:generate && php artisan migrate && php artisan db:seed",
     "setup:frontend": "cd frontend && npm install && cp .env.example .env",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
