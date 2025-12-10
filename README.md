@@ -103,7 +103,7 @@ The database is seeded with test accounts for easy setup:
 **User Account:**
 
 - Email: `user@test.com`
-- Password: (auto-generated, manually reset via database if needed)
+- Password: `password` (use the password reset feature to change it)
 
 Use these to test the application. **Remember to change these credentials in production!**
 
