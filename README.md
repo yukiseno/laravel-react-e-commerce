@@ -213,7 +213,7 @@ The frontend will be available at `http://localhost:5173`
 
 ## API Documentation
 
-[API documentation available in `/backend/CLAUDE.md` or visit the project wiki](./backend/CLAUDE.md)
+API documentation and detailed endpoint information are available in the project wiki. Refer to the wiki for complete REST API specifications, request/response formats, and integration examples.
 
 ## Deployment & Production Guidelines
 
