@@ -11,7 +11,7 @@
             <div class="row mt-2">
                 <div class="col-md-12">
                     <div>
-                        <h3 class="mt-2">Dashboar</h3>
+                        <h3 class="mt-2">Dashboard</h3>
                         <hr>
                     </div>
                     <div class="card-body">
