@@ -1,1 +1,9 @@
 @import "tailwindcss";
+.react-simple-star-rating {
+  line-height: 0;
+}
+
+.react-simple-star-rating .empty-icons svg,
+.react-simple-star-rating .filled-icons svg {
+  display: inline-block;
+}

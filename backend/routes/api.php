@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ReviewController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', function (Request $request) {
@@ -23,6 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('store/order', [OrderController::class, 'store']);
     Route::post('pay/order', [OrderController::class, 'payOrderByStripe']);
     Route::post('pay/update', [OrderController::class, 'updatePaymentIntent']);
+    //reviews routes
+    Route::post('review/store', [ReviewController::class, 'store']);
+    Route::put('review/update', [ReviewController::class, 'update']);
+    Route::post('review/delete', [ReviewController::class, 'delete']);
 });
 //products routes
 Route::get('products', [ProductController::class, 'index']);
