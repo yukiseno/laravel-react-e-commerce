@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', [AdminController::class, 'login'])->name('admin.login');
 Route::post('admin/auth', [AdminController::class, 'auth'])->name('admin.auth');
@@ -69,5 +70,8 @@ Route::middleware('admin')->group(function () {
         Route::get('reviews', [ReviewController::class, 'index'])->name('admin.reviews.index');
         Route::patch('update/{review}/{status}/review', [ReviewController::class, 'toggleApprovedStatus'])->name('admin.reviews.update');
         Route::delete('delete/{review}/review', [ReviewController::class, 'delete'])->name('admin.reviews.delete');
+        //users routes
+        Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::delete('delete/{user}/user', [UserController::class, 'delete'])->name('admin.users.delete');
     });
 });

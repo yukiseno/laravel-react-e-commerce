@@ -15,7 +15,7 @@
                     </div>
                     <hr>
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table paging-table">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
