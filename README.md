@@ -211,10 +211,6 @@ The frontend will be available at `http://localhost:5173`
 - Create feature branches for new development
 - Follow Laravel and React best practices
 
-## API Documentation
-
-API documentation and detailed endpoint information are available in the project wiki. Refer to the wiki for complete REST API specifications, request/response formats, and integration examples.
-
 ## Deployment & Production Guidelines
 
 ### Backend Deployment
@@ -310,24 +306,6 @@ API documentation and detailed endpoint information are available in the project
 - ✅ Enable CORS properly for frontend domain
 - ✅ Use strong database passwords
 - ✅ Monitor and log errors in production
-
-### Monitoring & Maintenance
-
-- Monitor API response times and errors
-- Set up automated backups for database
-- Log all transactions and user activities
-- Monitor server resource usage (CPU, memory, disk)
-- Keep framework and dependencies updated
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## License
 
