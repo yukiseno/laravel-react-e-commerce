@@ -136,7 +136,7 @@ export default function Product() {
                   max={product?.qty > 1 ? product.qty : 1}
                   value={qty}
                   onChange={(e) => setQty(Number(e.target.value))}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-gray-300"
+                  className="w-full px-3 py-2 border border-black/20 rounded-lg focus:ring focus:ring-gray-300"
                   placeholder="Qty"
                 />
               </div>

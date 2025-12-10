@@ -98,7 +98,7 @@ export default function Home() {
                 defaultValue=""
                 onChange={(e) => handleColorSelectBox(e)}
                 disabled={selectedSize || searchTerm}
-                className="border rounded-lg p-2 w-full bg-white disabled:bg-gray-100"
+                className="h-10 border border-black/20 rounded-lg p-2 w-full bg-white disabled:bg-gray-100"
               >
                 <option value="" disabled={!selectedColor}>
                   All Colors
@@ -123,7 +123,7 @@ export default function Home() {
                 defaultValue=""
                 onChange={(e) => handleSizeSelectBox(e)}
                 disabled={selectedColor || searchTerm}
-                className="border rounded-lg p-2 w-full bg-white disabled:bg-gray-100"
+                className="h-10 border border-black/20 rounded-lg p-2 w-full bg-white disabled:bg-gray-100"
               >
                 <option value="" disabled={!selectedSize}>
                   All Sizes
@@ -145,7 +145,7 @@ export default function Home() {
               <div className="flex">
                 <input
                   type="search"
-                  className="border rounded-lg p-2 w-full disabled:bg-gray-100"
+                  className="h-10 border border-black/20 rounded-lg p-2 w-full disabled:bg-gray-100"
                   value={searchTerm}
                   disabled={selectedColor || selectedSize}
                   onChange={(e) => setSearchTerm(e.target.value)}

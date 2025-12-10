@@ -5,7 +5,7 @@ export default function ProductListItem({ product }) {
   return (
     <Link
       to={`/product/${product.slug}`}
-      className="block border rounded-xl p-4 shadow hover:shadow-lg transition"
+      className="block border border-black/20 rounded-xl p-4 shadow hover:shadow-lg transition"
     >
       <img
         src={product.thumbnail}

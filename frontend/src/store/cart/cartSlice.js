@@ -21,10 +21,10 @@ export const cartSlice = createSlice({
           product.size === item.size
       );
       if (productItem) {
-        toast.info("Product already added to your cart");
+        toast.info("This item is already in your cart");
       } else {
         state.cartItems = [item, ...state.cartItems];
-        toast.success("Product already added to your cart");
+        toast.success("Item added to your cart");
       }
     },
     incrementQ(state, action) {
