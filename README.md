@@ -5,6 +5,7 @@ A modern full-stack e-commerce application built with Laravel 11 and React 18. T
 ## ✨ Features
 
 - **User Authentication & Authorization** - Secure login and admin management
+- **Password Reset** - Email-based password recovery with Mailtrap integration
 - **Product Management** - Browse, filter, and manage products with images
 - **Shopping Cart** - Add/remove items with real-time updates
 - **Order Processing** - Complete order management system
@@ -89,6 +90,22 @@ After running `npm run setup` and `npm install`, you need to add your Stripe key
    ```
 
 Get your keys from your [Stripe Dashboard](https://dashboard.stripe.com/).
+
+### Test Credentials
+
+The database is seeded with test accounts for easy setup:
+
+**Admin Account:**
+
+- Email: `admin@email.com`
+- Password: `admin1234`
+
+**User Account:**
+
+- Email: `user@test.com`
+- Password: (auto-generated, manually reset via database if needed)
+
+Use these to test the application. **Remember to change these credentials in production!**
 
 ## Installation
 

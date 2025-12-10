@@ -8,8 +8,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use App\Http\Requests\AuthUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Models\PasswordResetToken;
+use App\Mail\PasswordResetMail;
 
 class UserController extends Controller
 {
@@ -98,6 +103,88 @@ class UserController extends Controller
                 'message' => 'Profile updated successfully',
                 'user' => UserResource::make($request->user())
             ]);
+        }
+    }
+
+    /**
+     * Send password reset link to email
+     */
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        try {
+            // Delete any existing tokens for this email
+            PasswordResetToken::where('email', $request->email)->delete();
+
+            // Create a new reset token
+            $token = Str::random(60);
+            PasswordResetToken::create([
+                'email' => $request->email,
+                'token' => Hash::make($token),
+                'created_at' => now()
+            ]);
+
+            // Send email with reset link
+            Mail::to($request->email)->send(new PasswordResetMail($request->email, $token));
+
+            return response()->json([
+                'message' => 'Password reset link sent to your email'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to send reset link: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Reset password with token
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'token' => 'required|string',
+            'password' => 'required|min:6|confirmed'
+        ]);
+
+        try {
+            // Find the reset token
+            $resetToken = PasswordResetToken::where('email', $request->email)->first();
+
+            if (!$resetToken || !Hash::check($request->token, $resetToken->token)) {
+                return response()->json([
+                    'error' => 'Invalid or expired reset token'
+                ], 422);
+            }
+
+            // Check if token is not expired (2 hours)
+            if ($resetToken->created_at->addHours(2) < now()) {
+                $resetToken->delete();
+                return response()->json([
+                    'error' => 'Reset token has expired'
+                ], 422);
+            }
+
+            // Update user password
+            $user = User::where('email', $request->email)->first();
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+
+            // Delete the reset token
+            $resetToken->delete();
+
+            return response()->json([
+                'message' => 'Password reset successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to reset password'
+            ], 500);
         }
     }
 }

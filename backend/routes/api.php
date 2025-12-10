@@ -38,3 +38,5 @@ Route::get('product/{product}/show', [ProductController::class, 'show']);
 //user routes
 Route::post('user/register', [UserController::class, 'store']);
 Route::post('user/login', [UserController::class, 'auth']);
+Route::post('user/forgot-password', [UserController::class, 'forgotPassword']);
+Route::post('user/reset-password', [UserController::class, 'resetPassword']);

@@ -26,6 +26,7 @@
                                     <th scope="col">Total ($)</th>
                                     <th scope="col">Coupon</th>
                                     <th scope="col">By</th>
+                                    <th scope="col">Payment ID</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Delivered</th>
                                     <th scope="col" class="text-end">Actions</th>
@@ -66,6 +67,16 @@
 
                                         <td>
                                             {{ $order->user->name }}
+                                        </td>
+
+                                        <td>
+                                            @if ($order->payment_intent_id)
+                                                <small class="text-muted" title="{{ $order->payment_intent_id }}">
+                                                    {{ substr($order->payment_intent_id, 0, 20) }}...
+                                                </small>
+                                            @else
+                                                <span class="badge bg-secondary">N/A</span>
+                                            @endif
                                         </td>
 
                                         <td>

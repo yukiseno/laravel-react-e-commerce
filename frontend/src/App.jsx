@@ -6,6 +6,7 @@ import Cart from "./components/cart/Cart";
 import Checkout from "./components/checkout/Checkout";
 import Register from "./components/user/Register";
 import Login from "./components/user/Login";
+import ForgotPassword from "./components/user/ForgotPassword";
 import Profile from "./components/user/Profile";
 import PayByStripe from "./components/checkout/PayByStripe";
 import UserOrders from "./components/user/UserOrders";
@@ -22,6 +23,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/register/" element={<Register />} />
         <Route path="/login/" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ForgotPassword />} />
         <Route path="/pay/order" element={<PayByStripe />} />
         <Route path="/user/orders" element={<UserOrders />} />
         <Route path="*" element={<PageNotFound />} />
