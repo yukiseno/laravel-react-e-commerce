@@ -55,7 +55,7 @@ coverage/
 Homestead.json
 Homestead.yaml
 
-# Lock files (optional - uncomment if you want to commit them)
-# package-lock.json
+# Lock files
+package-lock.json
 # yarn.lock
 # composer.lock
