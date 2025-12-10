@@ -113,6 +113,7 @@ Use these to test the application. **Remember to change these credentials in pro
 
 ```bash
 npm run setup
+npm install
 ```
 
 ### Option 2: Manual Setup
