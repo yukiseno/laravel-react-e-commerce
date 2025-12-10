@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cart/cartSlice";
 import { formatPrice } from "../../helpers/price";
 import Reviews from "../reviews/Reviews";
-
+import { Rating } from "react-simple-star-rating";
 export default function Product() {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState([]);
@@ -37,6 +37,13 @@ export default function Product() {
     fetchProductBySlug();
   }, [slug]);
 
+  const calculateReviewAverage = () => {
+    let average = product?.reviews?.reduce((acc, review) => {
+      return (acc += review.rating / product.reviews.length);
+    }, 0);
+
+    return average > 0 ? average.toFixed(3) : 0;
+  };
   const makeUniqueId = (length) => {
     let result = "";
     const characters =
@@ -75,6 +82,23 @@ export default function Product() {
                   {formatPrice(product?.price)}
                 </span>
               </div>
+
+              {calculateReviewAverage() > 0 && (
+                <div className="d-flex align-items-center">
+                  {calculateReviewAverage()}{" "}
+                  <span className="mx-1 text-muted">
+                    <i>
+                      {product?.reviews?.length}{" "}
+                      {product?.reviews?.length > 1 ? "Reviews" : "Review"}
+                    </i>
+                  </span>
+                  <Rating
+                    initialValue={calculateReviewAverage()}
+                    readonly
+                    size={32}
+                  />
+                </div>
+              )}
 
               {/* DESCRIPTION */}
               <div className="prose max-w-none">{parse(product?.desc)}</div>
