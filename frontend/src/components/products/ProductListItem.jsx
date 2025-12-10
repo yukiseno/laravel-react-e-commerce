@@ -1,7 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../../helpers/price";
+import { Rating } from "react-simple-star-rating";
 export default function ProductListItem({ product }) {
+  const calculateReviewAverage = () => {
+    let average = product?.reviews?.reduce((acc, review) => {
+      return (acc += review.rating / product.reviews.length);
+    }, 0);
+
+    return average > 0 ? average.toFixed(1) : 0;
+  };
   return (
     <Link
       to={`/product/${product.slug}`}
@@ -14,6 +22,12 @@ export default function ProductListItem({ product }) {
       />
       <div className="mt-3 font-semibold">{product.name}</div>
       <div className="text-gray-600">{formatPrice(product.price)}</div>
+
+      {calculateReviewAverage() > 0 && (
+        <div className="mt-2">
+          <Rating initialValue={calculateReviewAverage()} readonly size={24} />
+        </div>
+      )}
       <div className="flex gap-2 mt-2">
         {product.sizes?.map((size) => (
           <span key={size.id} className="text-xs border px-2 py-1 rounded">
