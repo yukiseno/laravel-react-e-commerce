@@ -67,9 +67,15 @@ This will:
 4. Install frontend dependencies
 5. Setup frontend environment (.env)
 
+After setup completes, install root dependencies:
+
+```bash
+npm install
+```
+
 ### Configure Stripe Keys
 
-After running `npm run setup`, you need to add your Stripe keys for payment processing:
+After running `npm run setup` and `npm install`, you need to add your Stripe keys for payment processing:
 
 1. **Backend** - Add to `/backend/.env`:
 
@@ -137,7 +143,7 @@ From the root directory:
 npm run dev
 ```
 
-This starts both the backend and frontend servers concurrently.
+This starts both backend and frontend servers concurrently using `concurrently` package.
 
 ### Option 2: Run Separately
 
