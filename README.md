@@ -51,9 +51,33 @@ laravel-react-e-commerce/
 - Composer
 - MySQL/PostgreSQL (or SQLite for development)
 
+## Quick Setup (Recommended)
+
+Run the complete setup with one command from the root directory:
+
+```bash
+npm run setup
+```
+
+This will:
+
+1. Install backend dependencies
+2. Setup backend environment (.env, key generation)
+3. Run database migrations and seeders
+4. Install frontend dependencies
+5. Setup frontend environment (.env)
+
 ## Installation
 
-### Backend Setup
+### Option 1: Automated Setup (Root Directory)
+
+```bash
+npm run setup
+```
+
+### Option 2: Manual Setup
+
+#### Backend Setup
 
 ```bash
 cd backend
@@ -74,7 +98,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-### Frontend Setup
+#### Frontend Setup
 
 ```bash
 cd frontend
@@ -82,13 +106,25 @@ cd frontend
 # Install dependencies
 npm install
 
-# Create environment file (if needed)
+# Create environment file
 cp .env.example .env
 ```
 
 ## Running the Application
 
-### Start Backend Server
+### Option 1: Run Both Simultaneously (Recommended)
+
+From the root directory:
+
+```bash
+npm run dev
+```
+
+This starts both the backend and frontend servers concurrently.
+
+### Option 2: Run Separately
+
+#### Start Backend Server
 
 ```bash
 cd backend
@@ -97,7 +133,7 @@ php artisan serve
 
 The API will be available at `http://localhost:8000`
 
-### Start Frontend Development Server
+#### Start Frontend Development Server
 
 ```bash
 cd frontend
@@ -106,28 +142,22 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`
 
-### Run Both Simultaneously (Optional)
-
-From the root directory:
-
-```bash
-# Terminal 1
-cd backend && php artisan serve
-
-# Terminal 2
-cd frontend && npm run dev
-```
-
 ## Available Scripts
 
-### Backend
+### Root Directory Scripts
+
+- `npm run setup` - Complete setup (install all dependencies and run migrations)
+- `npm run dev` - Start both backend and frontend servers concurrently
+- `npm run build` - Build both backend and frontend for production
+
+### Backend Scripts
 
 - `php artisan serve` - Start development server
 - `php artisan migrate` - Run database migrations
 - `php artisan db:seed` - Seed the database
 - `php artisan tinker` - Interactive PHP shell
 
-### Frontend
+### Frontend Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
@@ -150,6 +180,7 @@ cd frontend && npm run dev
 ### Backend Deployment
 
 1. **Environment Setup**
+
    ```bash
    # Set production environment variables in .env
    APP_ENV=production
@@ -160,15 +191,16 @@ cd frontend && npm run dev
    ```
 
 2. **Pre-Deployment**
+
    ```bash
    cd backend
-   
+
    # Install dependencies
    composer install --no-dev --optimize-autoloader
-   
+
    # Run migrations
    php artisan migrate --force
-   
+
    # Cache configuration
    php artisan config:cache
    php artisan route:cache
@@ -188,18 +220,20 @@ cd frontend && npm run dev
 ### Frontend Deployment
 
 1. **Build for Production**
+
    ```bash
    cd frontend
-   
+
    # Set production API endpoint in .env
    VITE_API_BASE_URL=https://your-api.com
    VITE_STRIPE_KEY=your_live_stripe_key
-   
+
    # Build
    npm run build
    ```
 
 2. **Deployment**
+
    - Deploy the `dist/` folder to your web server
    - Use a CDN for static assets (optional but recommended)
    - Enable gzip compression
@@ -213,6 +247,7 @@ cd frontend && npm run dev
 ### Environment Variables Checklist
 
 **Backend (.env)**
+
 - `APP_ENV=production`
 - `APP_DEBUG=false`
 - `APP_URL=https://your-domain.com`
@@ -221,6 +256,7 @@ cd frontend && npm run dev
 - `SANCTUM_STATEFUL_DOMAINS=your-domain.com`
 
 **Frontend (.env)**
+
 - `VITE_API_BASE_URL=https://your-api.com`
 - `VITE_STRIPE_KEY=pk_live_xxx`
 

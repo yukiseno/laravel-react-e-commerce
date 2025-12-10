@@ -1,0 +1,20 @@
+{
+  "name": "laravel-react-e-commerce",
+  "version": "1.0.0",
+  "description": "A modern full-stack e-commerce application built with Laravel 11 and React 18",
+  "private": true,
+  "scripts": {
+    "setup": "npm run setup:backend && npm run setup:frontend",
+    "setup:backend": "cd backend && composer install && cp .env.example .env && php artisan key:generate && php artisan migrate && php artisan db:seed",
+    "setup:frontend": "cd frontend && npm install && cp .env.example .env",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && php artisan serve",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd backend && composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
