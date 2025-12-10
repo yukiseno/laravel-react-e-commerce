@@ -16,6 +16,8 @@ Route::post('admin/auth', [AdminController::class, 'auth'])->name('admin.auth');
 Route::middleware('admin')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('dashboard', [AdminController::class, 'index'])->name('admin.index');
+        Route::get('change-password', [AdminController::class, 'showChangePasswordForm'])->name('admin.change-password.show');
+        Route::post('change-password', [AdminController::class, 'changePassword'])->name('admin.change-password.update');
         Route::post('logout', [AdminController::class, 'logout'])->name('admin.logout');
         //colors routes
         Route::resource('colors', ColorController::class, [

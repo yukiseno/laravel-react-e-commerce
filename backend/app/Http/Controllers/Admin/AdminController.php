@@ -7,6 +7,7 @@ use App\Http\Requests\AuthAdminRequest;
 use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -66,5 +67,38 @@ class AdminController extends Controller
     {
         auth()->guard('admin')->logout();
         return redirect()->route('admin.index');
+    }
+
+    /**
+     * Show change password form
+     */
+    public function showChangePasswordForm()
+    {
+        return view('admin.change-password');
+    }
+
+    /**
+     * Change admin password
+     */
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $admin = auth()->guard('admin')->user();
+
+        // Verify current password
+        if (!Hash::check($request->current_password, $admin->password)) {
+            return redirect()->back()->with('error', 'Current password is incorrect');
+        }
+
+        // Update to new password
+        $admin->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return redirect()->back()->with('success', 'Password changed successfully');
     }
 }
