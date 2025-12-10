@@ -1,6 +1,18 @@
 # Laravel React E-Commerce
 
-A full-stack e-commerce application built with Laravel and React to learn modern web development practices.
+A modern full-stack e-commerce application built with Laravel 11 and React 18. This project demonstrates best practices for building scalable, production-ready web applications with a clean RESTful API backend and a responsive single-page application frontend.
+
+## ✨ Features
+
+- **User Authentication & Authorization** - Secure login and admin management
+- **Product Management** - Browse, filter, and manage products with images
+- **Shopping Cart** - Add/remove items with real-time updates
+- **Order Processing** - Complete order management system
+- **Admin Dashboard** - Manage products, orders, and users
+- **Product Reviews & Ratings** - User feedback system
+- **Product Variants** - Support for colors and sizes
+- **Coupon System** - Discount codes management
+- **Responsive Design** - Mobile-friendly interface
 
 ## Project Structure
 
@@ -15,16 +27,21 @@ laravel-react-e-commerce/
 ## Tech Stack
 
 ### Backend
+
 - **Framework**: Laravel 11
-- **Language**: PHP
-- **Database**: MySQL/PostgreSQL (configurable)
-- **API**: RESTful API
+- **Language**: PHP 8.2+
+- **Database**: MySQL/PostgreSQL
+- **API**: RESTful API with JSON responses
+- **Authentication**: Laravel Sanctum
 
 ### Frontend
+
 - **Framework**: React 18
 - **Build Tool**: Vite
 - **Routing**: React Router
-- **Styling**: CSS/Tailwind (configurable)
+- **Styling**: Tailwind CSS
+- **HTTP Client**: Axios
+- **State Management**: React Context API
 
 ## Prerequisites
 
@@ -92,6 +109,7 @@ The frontend will be available at `http://localhost:5173`
 ### Run Both Simultaneously (Optional)
 
 From the root directory:
+
 ```bash
 # Terminal 1
 cd backend && php artisan serve
@@ -103,12 +121,14 @@ cd frontend && npm run dev
 ## Available Scripts
 
 ### Backend
+
 - `php artisan serve` - Start development server
 - `php artisan migrate` - Run database migrations
 - `php artisan db:seed` - Seed the database
 - `php artisan tinker` - Interactive PHP shell
 
 ### Frontend
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
@@ -123,25 +143,35 @@ cd frontend && npm run dev
 
 ## API Documentation
 
-[Add API documentation here as you develop endpoints]
+[API documentation available in `/backend/CLAUDE.md` or visit the project wiki](./backend/CLAUDE.md)
 
 ## Contributing
 
-1. Create a feature branch
-2. Make your changes
-3. Commit with clear messages
-4. Push to your fork
-5. Create a pull request
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-MIT License - feel free to use this project for learning purposes.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Notes
+## Support
 
-This is a learning project to understand:
-- Full-stack web development
-- Laravel REST API development
-- React component architecture
+If you encounter any issues or have questions, please open an issue on GitHub.
+
+## Author
+
+Created by [Yuki Seno](https://github.com/yukiseno)
+
+## Acknowledgments
+
+- Laravel Documentation
+- React Documentation
+- Vite Guide
+- Community feedback and contributions
 - Frontend-backend integration
 - Database design and migrations
