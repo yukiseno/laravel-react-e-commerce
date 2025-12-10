@@ -67,6 +67,23 @@ This will:
 4. Install frontend dependencies
 5. Setup frontend environment (.env)
 
+### Configure Stripe Keys
+
+After running `npm run setup`, you need to add your Stripe keys for payment processing:
+
+1. **Backend** - Add to `/backend/.env`:
+
+   ```
+   STRIPE_SECRET=sk_test_your_stripe_secret_key
+   ```
+
+2. **Frontend** - Add to `/frontend/.env`:
+   ```
+   VITE_STRIPE_KEY=pk_test_your_stripe_public_key
+   ```
+
+Get your keys from your [Stripe Dashboard](https://dashboard.stripe.com/).
+
 ## Installation
 
 ### Option 1: Automated Setup (Root Directory)
