@@ -10,10 +10,6 @@ use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        sleep(1);
-    }
     /**
      * Get all the products
      */
