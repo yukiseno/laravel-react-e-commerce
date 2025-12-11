@@ -83,7 +83,7 @@ export default function Header() {
             <div className="flex shrink-0 items-center">
               <img
                 alt="React Learning"
-                src="/images/logo.png"
+                src="/images/logo.svg"
                 className="h-8 w-auto"
               />
             </div>
