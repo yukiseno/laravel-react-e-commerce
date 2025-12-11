@@ -2,6 +2,12 @@
 
 A modern full-stack e-commerce application built with Laravel 11 and React 18. This project demonstrates best practices for building scalable, production-ready web applications with a clean RESTful API backend and a responsive single-page application frontend.
 
+## 🚀 Live Demo
+
+- **Frontend**: https://react-ecommerce-coral-eight.vercel.app
+- **Backend API**: https://laravel-backend-api-production.up.railway.app
+- **Database**: PostgreSQL (Supabase)
+
 ## ✨ Features
 
 - **User Authentication & Authorization** - Secure login and admin management
@@ -31,9 +37,10 @@ laravel-react-e-commerce/
 
 - **Framework**: Laravel 11
 - **Language**: PHP 8.2+
-- **Database**: MySQL/PostgreSQL
+- **Database**: PostgreSQL (Supabase)
 - **API**: RESTful API with JSON responses
 - **Authentication**: Laravel Sanctum
+- **Hosting**: Railway
 
 ### Frontend
 
@@ -43,6 +50,13 @@ laravel-react-e-commerce/
 - **Styling**: Tailwind CSS
 - **HTTP Client**: Axios
 - **State Management**: React Context API
+- **Hosting**: Vercel
+
+### Payment & Services
+
+- **Payment**: Stripe
+- **Email**: Mailtrap
+- **Database**: PostgreSQL (Supabase)
 
 ## Prerequisites
 
