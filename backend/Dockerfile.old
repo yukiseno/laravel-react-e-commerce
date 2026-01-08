@@ -1,0 +1,77 @@
+# Use official PHP image with composer
+FROM php:8.3-fpm as builder
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpq-dev \
+    sqlite3 \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_pgsql pdo_sqlite
+
+# Install composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /app
+
+# Copy composer files
+COPY composer.json composer.lock ./
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy application files
+COPY . .
+
+# Skip npm build - frontend is deployed separately to Vercel
+
+# Final stage
+FROM php:8.3-fpm
+
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    sqlite3 \
+    libsqlite3-dev \
+    nginx \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install pdo pdo_pgsql pdo_sqlite
+
+WORKDIR /app
+
+COPY --from=builder /app /app
+
+# Create nginx config
+RUN mkdir -p /etc/nginx && \
+    echo 'user www-data;' > /etc/nginx/nginx.conf && \
+    echo 'worker_processes auto;' >> /etc/nginx/nginx.conf && \
+    echo 'pid /run/nginx.pid;' >> /etc/nginx/nginx.conf && \
+    echo 'events { worker_connections 768; }' >> /etc/nginx/nginx.conf && \
+    echo 'http {' >> /etc/nginx/nginx.conf && \
+    echo '  sendfile on; tcp_nopush on; tcp_nodelay on;' >> /etc/nginx/nginx.conf && \
+    echo '  keepalive_timeout 65; types_hash_max_size 2048;' >> /etc/nginx/nginx.conf && \
+    echo '  include /etc/nginx/mime.types; default_type application/octet-stream;' >> /etc/nginx/nginx.conf && \
+    echo '  access_log /var/log/nginx/access.log; error_log /var/log/nginx/error.log;' >> /etc/nginx/nginx.conf && \
+    echo '  server {' >> /etc/nginx/nginx.conf && \
+    echo '    listen 8080; server_name _;' >> /etc/nginx/nginx.conf && \
+    echo '    root /app/public; index index.php;' >> /etc/nginx/nginx.conf && \
+    echo '    location / { try_files $uri $uri/ /index.php?$query_string; }' >> /etc/nginx/nginx.conf && \
+    echo '    location ~ \.php$ { fastcgi_pass 127.0.0.1:9000; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name; include fastcgi_params; }' >> /etc/nginx/nginx.conf && \
+    echo '    location ~ /\.ht { deny all; }' >> /etc/nginx/nginx.conf && \
+    echo '  }' >> /etc/nginx/nginx.conf && \
+    echo '}' >> /etc/nginx/nginx.conf
+
+# Create necessary directories
+RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views
+
+# Fix permissions
+RUN chown -R www-data:www-data /app
+
+EXPOSE 8080
+
+CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
