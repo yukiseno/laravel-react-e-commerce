@@ -4,7 +4,6 @@ FROM php:8.4-fpm
 RUN apt-get update && apt-get install -y \
     git \
     curl \
-    nginx \
     sqlite3 \
     libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -33,12 +32,8 @@ RUN php /app/artisan key:generate --force || true && \
     php /app/artisan route:cache || true && \
     php /app/artisan view:cache || true
 
-# Create nginx config
-RUN mkdir -p /etc/nginx/conf.d && printf 'server {\n    listen 0.0.0.0:8080;\n    server_name _;\n    root /app/public;\n    index index.php;\n\n    location / {\n        try_files $uri $uri/ /index.php?$query_string;\n    }\n\n    location ~ \.php$ {\n        fastcgi_pass 127.0.0.1:9000;\n        fastcgi_index index.php;\n        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;\n        include fastcgi_params;\n    }\n\n    location ~ /\.ht {\n        deny all;\n    }\n}\n' > /etc/nginx/conf.d/default.conf
+# Expose port 8000 (Laravel default)
+EXPOSE 8000
 
-# Create startup script
-RUN mkdir -p /usr/local/bin && printf '#!/bin/bash\nset -e\n\necho "Starting PHP-FPM..."\nphp-fpm -D\n\necho "Running Laravel migrations..."\nphp /app/artisan migrate --force 2>&1 || true\n\necho "Starting Nginx..."\nexec nginx -g "daemon off;"\n' > /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/docker-entrypoint.sh
-
-EXPOSE 8080
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+# Start PHP development server
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
