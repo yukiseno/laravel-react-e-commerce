@@ -2,7 +2,7 @@ app = "backend-laravel-api"
 
 [build]
 dockerfile = "backend/Dockerfile"
-context = "backend"
+context = "."
 
 [[services]]
 internal_port = 8080
@@ -18,4 +18,4 @@ handlers = ["http"]
 [[services.tcp_checks]]
 interval = 10000
 timeout = 5000
-grace_period = "5s"
+grace_period = "15s"
