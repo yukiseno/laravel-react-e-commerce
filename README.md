@@ -5,7 +5,7 @@ A modern full-stack e-commerce application built with Laravel 11 and React 18. T
 ## 🚀 Live Demo
 
 - **Frontend**: https://react-ecommerce-coral-eight.vercel.app
-- **Backend API**: https://backend-laravel-api.fly.dev
+- **Backend API**: https://laravel-backend-api-production.up.railway.app
 - **Database**: SQLite
 
 ## ✨ Features
@@ -40,7 +40,7 @@ laravel-react-e-commerce/
 - **Database**: PostgreSQL (Supabase)
 - **API**: RESTful API with JSON responses
 - **Authentication**: Laravel Sanctum
-- **Hosting**: Fly.io (free tier)
+- **Hosting**: Railway
 
 ### Frontend
 
@@ -57,37 +57,6 @@ laravel-react-e-commerce/
 - **Payment**: Stripe
 - **Email**: Mailtrap
 - **Database**: PostgreSQL (Supabase)
-
-## 🚢 Deployment
-
-### Backend - Fly.io
-
-The backend is automatically deployed to Fly.io on every push to the `main` branch.
-
-**Manual deployment:**
-
-```bash
-cd backend
-flyctl deploy --config fly.toml
-```
-
-**Live URL**: https://backend-laravel-api.fly.dev
-
-For more details, see [Backend Deployment Guide](./backend/README.md)
-
-### Frontend - Vercel
-
-The frontend is deployed on Vercel with automatic deploys on push to `main`.
-
-**Live URL**: https://react-ecommerce-coral-eight.vercel.app
-
-## Prerequisites
-
-- PHP 8.2+
-- Node.js 18+
-- npm or yarn
-- Composer
-- MySQL/PostgreSQL (or SQLite for development)
 
 ## Quick Setup (Recommended)
 
