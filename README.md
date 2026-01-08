@@ -6,7 +6,7 @@ A modern full-stack e-commerce application built with Laravel 11 and React 18. T
 
 - **Frontend**: https://react-ecommerce-coral-eight.vercel.app
 - **Backend API**: https://backend-laravel-api.fly.dev
-- **Database**: SQLite (development) / SQLite (production)
+- **Database**: SQLite
 
 ## ✨ Features
 
