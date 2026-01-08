@@ -38,4 +38,4 @@ RUN mkdir -p /etc/nginx/conf.d && printf 'server {\n    listen 8080;\n    server
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "php /app/artisan migrate --force || true && php -fpm -D && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "php /app/artisan migrate --force || true && php-fpm -D && nginx -g 'daemon off;'"]
