@@ -1,20 +1,22 @@
-# Backend-specific ignores
-.git
-.gitignore
-.gitattributes
-.env.example
-.env.testing
-*.log
-.DS_Store
-Thumbs.db
-node_modules/.cache
-storage/logs/*
+
+# Node/npm
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Environment
+.env
+.env.*
+
+# Laravel build artifacts
+public/hot
+storage/*.key
+storage/app/public
+storage/debugbar
+storage/framework/cache
+storage/framework/sessions
+storage/framework/testing
+storage/framework/views
+storage/logs
+vendor
 bootstrap/cache/*
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/views/*
-.vscode
-.idea
-tests
-phpunit.xml
-README.md
