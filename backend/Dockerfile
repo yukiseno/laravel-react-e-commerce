@@ -27,6 +27,12 @@ RUN composer install --no-dev --optimize-autoloader
 RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache && \
     chmod -R 777 storage bootstrap/cache
 
+# Generate Laravel app key if not present, and optimize
+RUN php artisan key:generate --force || true && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
+
 # Create nginx config
 RUN mkdir -p /etc/nginx/conf.d && printf 'server {\n    listen 8080;\n    server_name _;\n    root /app/public;\n    index index.php;\n\n    location / {\n        try_files $uri $uri/ /index.php?$query_string;\n    }\n\n    location ~ \.php$ {\n        fastcgi_pass 127.0.0.1:9000;\n        fastcgi_index index.php;\n        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;\n        include fastcgi_params;\n    }\n\n    location ~ /\.ht {\n        deny all;\n    }\n}\n' > /etc/nginx/conf.d/default.conf
 
