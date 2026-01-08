@@ -15,9 +15,7 @@ min_machines_running = 1
 port = 80
 handlers = ["http"]
 
-[[services.http_checks]]
-interval = 30000
+[[services.tcp_checks]]
+interval = 10000
 timeout = 5000
 grace_period = "5s"
-method = "get"
-path = "/"
