@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "setup": "npm install && npm run setup:backend && npm run setup:frontend",
-    "setup:backend": "cd backend && composer install && cp .env.example .env && php artisan key:generate && php artisan migrate && php artisan db:seed",
-    "setup:frontend": "cd frontend && npm install && cp .env.example .env",
+    "setup:backend": "cd backend && composer install && node -e \"const fs = require('fs'); fs.copyFileSync('.env.example', '.env')\" && php artisan key:generate && php artisan migrate && php artisan db:seed",
+    "setup:frontend": "cd frontend && npm install && node -e \"const fs = require('fs'); fs.copyFileSync('.env.example', '.env')\"",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && php artisan serve",
     "dev:frontend": "cd frontend && npm run dev",

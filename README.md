@@ -115,6 +115,13 @@ Use these to test the application. **Remember to change these credentials in pro
 
 ## Installation
 
+First, clone the repository:
+
+```bash
+git clone https://github.com/yukiseno/laravel-react-e-commerce.git
+cd laravel-react-e-commerce
+```
+
 ### Option 1: Automated Setup (Root Directory)
 
 ```bash
